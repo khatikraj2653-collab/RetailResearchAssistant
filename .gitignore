@@ -1,0 +1,12 @@
+.env
+cache.sqlite3
+universe_cache.json
+__pycache__/
+*.pyc
+.env
+cache.sqlite3
+history.sqlite3
+universe_cache.json
+theme_classification.json
+__pycache__/
+*.pyc

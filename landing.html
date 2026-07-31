@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retail Research Assistant — S&P 500 Research Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:#04080F;font-family:'Inter',sans-serif;overflow-x:hidden;color:#E8F4FF;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(220,38,38,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(220,38,38,0.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;border-bottom:1px solid rgba(220,38,38,0.1);background:rgba(4,8,20,0.85);backdrop-filter:blur(16px);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#DC2626,#F87171);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 0 18px rgba(220,38,38,0.5);}
+.nav-name{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:#E8F4FF;letter-spacing:-0.3px;}
+.nav-links{display:flex;gap:32px;}
+.nav-links a{font-size:13px;color:#3A5A70;text-decoration:none;font-weight:500;transition:color 0.2s;}
+.nav-links a:hover{color:#FCA5A5;}
+.nav-cta{background:linear-gradient(135deg,#DC2626,#EF4444);color:#fff;border:none;border-radius:9px;padding:9px 22px;font-size:13px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 0 18px rgba(220,38,38,0.4);transition:all 0.2s;}
+.nav-cta:hover{box-shadow:0 0 30px rgba(239,68,68,0.6);transform:translateY(-1px);}
+.ticker{position:relative;z-index:20;background:rgba(0,8,24,0.98);border-bottom:1px solid rgba(220,38,38,0.1);padding:8px 0;overflow:hidden;margin-top:62px;}
+.tape{display:flex;animation:scroll 24s linear infinite;width:max-content;}
+.ti{display:flex;align-items:center;gap:8px;padding:0 26px;border-right:1px solid rgba(220,38,38,0.07);}
+.tsym{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#C0DCFF;}
+.tprice{font-size:12px;font-weight:600;color:#A0BCDC;}
+.tchg{font-size:11px;font-weight:600;padding:1px 7px;border-radius:4px;}
+.up{color:#34D399;background:rgba(52,211,153,0.1);}
+.dn{color:#F87171;background:rgba(248,113,113,0.1);}
+.dot{width:5px;height:5px;border-radius:50%;}
+.udt{background:#34D399;box-shadow:0 0 5px rgba(52,211,153,0.7);}
+.ddt{background:#F87171;box-shadow:0 0 5px rgba(248,113,113,0.7);}
+@keyframes scroll{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+#hero{min-height:100vh;background:radial-gradient(ellipse at 65% 40%,#091830 0%,#04080F 65%);position:relative;display:flex;flex-direction:column;overflow:hidden;}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(100px);z-index:0;}
+.o1{width:600px;height:600px;background:rgba(153,27,27,0.1);top:-200px;left:-200px;}
+.o2{width:400px;height:400px;background:rgba(239,68,68,0.06);bottom:-100px;right:-100px;}
+.o3{width:250px;height:250px;background:rgba(153,27,27,0.07);top:30%;left:38%;}
+.hero-inner{flex:1;display:grid;grid-template-columns:460px 1fr;align-items:center;padding:40px 48px;position:relative;z-index:5;}
+.badge{display:inline-flex;align-items:center;gap:7px;background:rgba(153,27,27,0.12);border:1px solid rgba(220,38,38,0.22);border-radius:20px;padding:5px 14px;font-size:10.5px;font-weight:600;color:#F87171;margin-bottom:16px;letter-spacing:0.05em;}
+.bdot{width:7px;height:7px;border-radius:50%;background:#EF4444;box-shadow:0 0 8px rgba(239,68,68,0.9);animation:blink 1.8s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:0.3;}50%{opacity:1;}}
+.hero-title{font-family:'Space Grotesk',sans-serif;font-size:2.4rem;font-weight:800;color:#E8F4FF;line-height:1.15;letter-spacing:-0.7px;margin-bottom:14px;}
+.hero-title em{font-style:normal;background:linear-gradient(135deg,#F87171,#FCA5A5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-desc{font-size:0.85rem;color:#2A5070;line-height:1.9;margin-bottom:20px;max-width:400px;}
+.hero-desc strong{color:#4A8AAA;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px;}
+.chip{background:rgba(153,27,27,0.12);border:1px solid rgba(220,38,38,0.16);color:#3A80C0;border-radius:6px;padding:4px 12px;font-size:10.5px;font-weight:600;}
+.ctas{display:flex;align-items:center;gap:12px;margin-bottom:24px;}
+.btn-primary{background:linear-gradient(135deg,#DC2626,#EF4444);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 0 22px rgba(220,38,38,0.45);transition:all 0.22s;}
+.btn-primary:hover{box-shadow:0 0 36px rgba(239,68,68,0.65);transform:translateY(-2px);}
+.btn-secondary{background:transparent;border:1px solid rgba(220,38,38,0.2);color:#2A5070;border-radius:10px;padding:12px 20px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+.btn-secondary:hover{border-color:rgba(220,38,38,0.45);color:#FCA5A5;}
+.stats{display:flex;gap:28px;padding-top:18px;border-top:1px solid rgba(220,38,38,0.08);}
+.stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.2rem;font-weight:700;color:#EF4444;}
+.stat-lbl{font-size:9.5px;color:#1A3A55;margin-top:2px;font-weight:500;letter-spacing:0.04em;}
+.right{position:relative;height:100%;min-height:400px;display:flex;align-items:flex-end;justify-content:center;}
+.bub{position:absolute;background:rgba(0,20,60,0.92);border:1px solid rgba(239,68,68,0.3);border-radius:10px;padding:6px 13px;font-size:11px;color:#FCA5A5;font-weight:500;white-space:nowrap;z-index:30;transition:opacity 0.4s;}
+.bl1{top:12%;left:0%;animation:bf 3.2s ease-in-out infinite;}
+.bl2{top:34%;left:1%;animation:bf 4.1s ease-in-out infinite 0.6s;}
+.bl3{top:56%;left:0%;animation:bf 3.7s ease-in-out infinite 1.2s;}
+.br1{top:12%;right:0%;animation:bf 3.8s ease-in-out infinite 0.3s;}
+.br2{top:34%;right:1%;animation:bf 3.4s ease-in-out infinite 0.9s;}
+.br3{top:52%;right:2%;animation:bf 4.3s ease-in-out infinite 1.5s;}
+.bl4{top:75%;left:0%;animation:bf 3.9s ease-in-out infinite 1.8s;}
+.br4{top:75%;right:0%;animation:bf 4.6s ease-in-out infinite 2.1s;}
+@keyframes bf{0%,100%{transform:translateY(0);}50%{transform:translateY(-7px);}}
+.robots-row{display:flex;align-items:flex-end;justify-content:center;gap:60px;width:100%;padding-bottom:10px;}
+.rw{display:flex;flex-direction:column;align-items:center;}
+.rw1{animation:f1 3.8s ease-in-out infinite;}
+.rw2{animation:f2 3.2s ease-in-out infinite;}
+@keyframes f1{0%,100%{transform:translateY(-160px);}50%{transform:translateY(-182px);}}
+@keyframes f2{0%,100%{transform:translateY(-174px);}50%{transform:translateY(-152px);}}
+.bot1{display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 0 20px rgba(239,68,68,0.35));}
+.b1-antenna-ball{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FCA5A5,#EF4444);box-shadow:0 0 14px rgba(220,38,38,0.9);}
+.b1-antenna-stick{width:4px;height:16px;background:linear-gradient(to bottom,#C0D8E8,#90A8B8);border-radius:3px;}
+.b1-head{width:110px;height:95px;background:radial-gradient(circle at 38% 28%,#FFFFFF,#EAF2FF 55%,#C8DAEA);border-radius:38px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset -3px -3px 12px rgba(153,27,27,0.07),0 4px 20px rgba(0,0,0,0.3);}
+.b1-head::before{content:'';position:absolute;top:10px;left:16px;width:32px;height:9px;background:rgba(255,255,255,0.55);border-radius:6px;transform:rotate(-10deg);}
+.b1-visor{width:84px;height:32px;background:linear-gradient(135deg,#B91C1C 0%,#DC2626 50%,#7F1D1D 100%);border-radius:11px;display:flex;align-items:center;justify-content:center;gap:12px;box-shadow:0 0 18px rgba(220,38,38,0.65);}
+.b1-eye{width:13px;height:13px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#AAFFFF,#F87171);box-shadow:0 0 10px rgba(248,113,113,0.95);}
+.b1-neck{width:28px;height:12px;background:linear-gradient(to bottom,#D8EAF5,#B8CAD8);border-radius:5px;margin:1px 0;}
+.b1-body{width:100px;height:85px;background:radial-gradient(circle at 36% 28%,#FFFFFF,#DFF0FF 55%,#BACED8);border-radius:26px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset -2px -2px 10px rgba(153,27,27,0.06),0 4px 18px rgba(0,0,0,0.25);}
+.b1-screen{width:52px;height:34px;background:linear-gradient(135deg,#2E0A0A,#450A0A);border-radius:8px;border:1.5px solid rgba(220,38,38,0.4);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+.b1-bar1{width:32px;height:3px;background:linear-gradient(90deg,#DC2626,#FCA5A5);border-radius:2px;}
+.b1-bar2{width:24px;height:3px;background:linear-gradient(90deg,#B91C1C,#EF4444);border-radius:2px;opacity:0.7;}
+.b1-armL{position:absolute;left:-26px;top:14px;width:22px;height:50px;background:radial-gradient(circle at 40% 30%,#FFFFFF,#D0E8F8 60%,#B0C8D8);border-radius:11px;}
+.b1-armR{position:absolute;right:-26px;top:14px;width:22px;height:50px;background:radial-gradient(circle at 40% 30%,#FFFFFF,#D0E8F8 60%,#B0C8D8);border-radius:11px;}
+.b1-legs{display:flex;gap:12px;margin-top:3px;}
+.b1-leg{width:24px;height:32px;background:radial-gradient(circle at 40% 30%,#EAF4FF,#C0D8EA);border-radius:10px;}
+.b1-feet{display:flex;gap:8px;margin-top:2px;}
+.b1-foot{width:32px;height:14px;background:linear-gradient(to right,#3A506A,#253448);border-radius:7px;box-shadow:0 3px 8px rgba(0,0,0,0.4);}
+.bot2{display:flex;flex-direction:column;align-items:center;filter:drop-shadow(0 0 20px rgba(239,68,68,0.3));}
+.b2-head{width:95px;height:88px;background:radial-gradient(circle at 38% 28%,#FFFFFF,#EBF5FF 55%,#CADAEA);border-radius:30px 30px 22px 22px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset -2px -2px 10px rgba(153,27,27,0.06),0 4px 18px rgba(0,0,0,0.3);}
+.b2-head::before{content:'';position:absolute;top:9px;left:14px;width:28px;height:8px;background:rgba(255,255,255,0.5);border-radius:5px;transform:rotate(-9deg);}
+.b2-visor{width:74px;height:28px;background:linear-gradient(135deg,#DC2626 0%,#F87171 50%,#FCA5A5 100%);border-radius:9px;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 0 16px rgba(239,68,68,0.7);}
+.b2-eye{width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFFFFF,#CCFFFF);box-shadow:0 0 10px rgba(248,113,113,0.9);}
+.b2-neck{width:26px;height:14px;background:linear-gradient(to bottom,#D8EAF5,#B8CAD8);border-radius:5px;margin:1px 0;}
+.b2-body{width:108px;height:100px;background:radial-gradient(circle at 36% 28%,#FFFFFF,#DFF0FF 55%,#BACED8);border-radius:22px;position:relative;display:flex;align-items:center;justify-content:center;box-shadow:inset -2px -2px 10px rgba(153,27,27,0.06),0 4px 18px rgba(0,0,0,0.25);}
+.b2-chest{width:60px;height:42px;background:linear-gradient(135deg,#2E0A0A,#450A0A);border-radius:10px;border:1.5px solid rgba(220,38,38,0.35);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;}
+.b2-tbar{width:38px;height:3px;background:linear-gradient(90deg,#DC2626,#EF4444);border-radius:2px;}
+.b2-vbar{width:3px;height:14px;background:linear-gradient(to bottom,#DC2626,#FCA5A5);border-radius:2px;}
+.b2-armL{position:absolute;left:-28px;top:12px;width:24px;height:56px;background:radial-gradient(circle at 40% 30%,#FFFFFF,#D0E8F8 60%,#B0C8D8);border-radius:12px;}
+.b2-armR{position:absolute;right:-28px;top:12px;width:24px;height:56px;background:radial-gradient(circle at 40% 30%,#FFFFFF,#D0E8F8 60%,#B0C8D8);border-radius:12px;}
+.b2-legs{display:flex;gap:14px;margin-top:3px;}
+.b2-leg{width:26px;height:36px;background:radial-gradient(circle at 40% 30%,#EAF4FF,#C0D8EA);border-radius:11px;}
+.b2-feet{display:flex;gap:10px;margin-top:2px;}
+.b2-foot{width:36px;height:16px;background:linear-gradient(to right,#3A506A,#253448);border-radius:8px;box-shadow:0 3px 8px rgba(0,0,0,0.4);}
+.rshadow{background:radial-gradient(ellipse,rgba(220,38,38,0.22) 0%,transparent 70%);border-radius:50%;}
+#features{position:relative;z-index:5;padding:100px 48px 80px;background:linear-gradient(to bottom,#04080F,#050C18);}
+.section-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(153,27,27,0.1);border:1px solid rgba(220,38,38,0.18);border-radius:20px;padding:4px 14px;font-size:10.5px;font-weight:600;color:#4A9AFF;margin-bottom:14px;letter-spacing:0.05em;}
+.section-title{font-family:'Space Grotesk',sans-serif;font-size:1.9rem;font-weight:700;color:#D8EEFF;margin-bottom:10px;letter-spacing:-0.4px;}
+.section-sub{font-size:0.85rem;color:#1E4060;line-height:1.8;margin-bottom:48px;max-width:520px;}
+.factors-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:48px;}
+.factor-card{background:rgba(0,18,50,0.7);border:1px solid rgba(153,27,27,0.2);border-radius:14px;padding:20px;transition:all 0.25s;position:relative;overflow:hidden;}
+.factor-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.4),transparent);opacity:0;transition:opacity 0.25s;}
+.factor-card:hover{border-color:rgba(220,38,38,0.35);transform:translateY(-3px);box-shadow:0 8px 30px rgba(153,27,27,0.12);}
+.factor-card:hover::before{opacity:1;}
+.fc-icon{font-size:1.5rem;margin-bottom:10px;}
+.fc-title{font-family:'Space Grotesk',sans-serif;font-size:0.9rem;font-weight:600;color:#C0DCFF;margin-bottom:6px;}
+.fc-desc{font-size:0.75rem;color:#1E4060;line-height:1.7;}
+.fc-tag{display:inline-block;background:rgba(153,27,27,0.15);border:1px solid rgba(220,38,38,0.2);color:#3A7AAA;border-radius:5px;padding:2px 8px;font-size:9.5px;font-weight:600;margin-top:8px;}
+#howitworks{position:relative;z-index:5;padding:80px 48px;background:rgba(0,6,18,0.8);}
+.hiw-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:start;margin-top:40px;}
+.hiw-steps{display:flex;flex-direction:column;gap:28px;}
+.step{display:flex;gap:18px;align-items:flex-start;}
+.step-num{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#B91C1C,#DC2626);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#fff;flex-shrink:0;box-shadow:0 0 16px rgba(153,27,27,0.4);}
+.step-title{font-family:'Space Grotesk',sans-serif;font-size:0.95rem;font-weight:600;color:#C0DCFF;margin-bottom:5px;}
+.step-desc{font-size:0.78rem;color:#1E4060;line-height:1.75;}
+.step-desc strong{color:#3A7090;}
+.hiw-problems{background:rgba(0,14,40,0.7);border:1px solid rgba(153,27,27,0.2);border-radius:16px;padding:28px;}
+.prob-title{font-family:'Space Grotesk',sans-serif;font-size:1rem;font-weight:600;color:#D0E8FF;margin-bottom:6px;}
+.prob-sub{font-size:0.75rem;color:#1A3A55;margin-bottom:20px;line-height:1.6;}
+.prob-item{display:flex;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(153,27,27,0.1);}
+.prob-item:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.prob-icon{font-size:1.1rem;flex-shrink:0;margin-top:2px;}
+.prob-head{font-size:0.8rem;font-weight:600;color:#8ABADD;margin-bottom:3px;}
+.prob-body{font-size:0.73rem;color:#1A3A55;line-height:1.65;}
+#cta{position:relative;z-index:5;padding:80px 48px;text-align:center;background:radial-gradient(ellipse at 50% 50%,#091830 0%,#04080F 70%);}
+.cta-title{font-family:'Space Grotesk',sans-serif;font-size:2rem;font-weight:700;color:#D8EEFF;margin-bottom:12px;letter-spacing:-0.4px;}
+.cta-title em{font-style:normal;background:linear-gradient(135deg,#F87171,#FCA5A5);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-sub{font-size:0.85rem;color:#1E4060;margin-bottom:32px;line-height:1.8;}
+.cta-btn{background:linear-gradient(135deg,#DC2626,#EF4444);color:#fff;border:none;border-radius:12px;padding:16px 40px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 0 28px rgba(220,38,38,0.45);transition:all 0.22s;}
+.cta-btn:hover{box-shadow:0 0 42px rgba(239,68,68,0.65);transform:translateY(-2px);}
+footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid rgba(220,38,38,0.08);display:flex;align-items:center;justify-content:space-between;}
+.footer-text{font-size:11px;color:#1A3A55;}
+.footer-right{font-size:11px;color:#1A3A55;text-align:right;}
+</style>
+</head>
+<body>
+<div id="welcomeModal" style="display:none;position:fixed;inset:0;background:rgba(0,4,12,0.85);z-index:500;align-items:center;justify-content:center;">
+  <div style="background:#0A1428;border:1px solid rgba(220,38,38,0.3);border-radius:18px;padding:36px;max-width:440px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+    <div style="font-size:2rem;margin-bottom:12px;">📊</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:#E8F4FF;margin-bottom:10px;">Welcome to Retail Research Assistant</div>
+    <div style="font-size:0.85rem;color:#5A8AAF;line-height:1.7;margin-bottom:22px;">An AI-powered research tool covering the full S&P 500 — company profiles, side-by-side comparisons, portfolio risk analysis, and theme-based discovery. Built for research, not prediction.</div>
+    <button onclick="closeWelcomeModal()" style="background:linear-gradient(135deg,#DC2626,#EF4444);color:#fff;border:none;border-radius:10px;padding:12px 32px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 0 20px rgba(220,38,38,0.4);">Get Started</button>
+  </div>
+</div>
+<div id="mainsite">
+<nav class="nav">
+  <div class="nav-logo">
+    <div class="nav-icon">📊</div>
+    <span class="nav-name">Retail Research Assistant</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features" onclick="document.getElementById('features').scrollIntoView({behavior:'smooth'});return false;">Features</a>
+    <a href="#howitworks" onclick="document.getElementById('howitworks').scrollIntoView({behavior:'smooth'});return false;">How it works</a>
+  </div>
+  <button class="nav-cta" onclick="goApp()">Get Started →</button>
+</nav>
+<div class="ticker"><div class="tape" id="tape"></div></div>
+<section id="hero">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hero-inner">
+    <div class="left">
+      <div class="badge"><div class="bdot"></div> LIVE · Full S&P 500 Coverage</div>
+      <h1 class="hero-title">S&P 500<br><em>Research Intelligence</em><br>Powered by AI</h1>
+      <p class="hero-desc">Four tools built for <strong>research, not prediction</strong>: get a plain-English profile on any S&P 500 company, compare stocks side by side, check your portfolio for concentration and correlation risk, and discover companies by sector or technology theme across all <strong>503 constituents</strong>.</p>
+      <div class="chips">
+        <span class="chip">LangGraph</span><span class="chip">yfinance</span><span class="chip">GPT-4o-mini</span>
+        <span class="chip">SQLite Cache</span><span class="chip">Streamlit</span>
+      </div>
+      <div class="ctas">
+        <button class="btn-primary" onclick="goApp()">Explore the Tools →</button>
+        <button class="btn-secondary" onclick="document.getElementById('howitworks').scrollIntoView({behavior:'smooth'})">How it works</button>
+      </div>
+      <div class="stats">
+        <div><div class="stat-num">4</div><div class="stat-lbl">RESEARCH TOOLS</div></div>
+        <div><div class="stat-num">503</div><div class="stat-lbl">COMPANIES COVERED</div></div>
+        <div><div class="stat-num">18</div><div class="stat-lbl">THEME BUCKETS</div></div>
+        <div><div class="stat-num">MSc</div><div class="stat-lbl">WARWICK AI</div></div>
+      </div>
+    </div>
+    <div class="right">
+      <div class="bub bl1" id="bl1">🔴 MU concentration: 43% flagged</div>
+      <div class="bub bl2" id="bl2">🔍 34 Biotech companies found</div>
+      <div class="bub bl3" id="bl3">📈 AAPL profile ready</div>
+      <div class="bub br1" id="br1">🟢 Portfolio correlation: low</div>
+      <div class="bub br2" id="br2">⚖️ AAPL vs MSFT compared</div>
+      <div class="bub br3" id="br3">🔍 30 Semiconductor matches</div>
+      <div class="bub bl4" id="bl4">📄 PDF statement parsed</div>
+      <div class="bub br4" id="br4">🟢 Sector diversification: fine</div>
+      <div class="robots-row">
+        <div class="rw rw1">
+          <div class="bot1">
+            <div class="b1-antenna-ball"></div>
+            <div class="b1-antenna-stick"></div>
+            <div class="b1-head"><div class="b1-visor"><div class="b1-eye"></div><div class="b1-eye"></div></div></div>
+            <div class="b1-neck"></div>
+            <div class="b1-body">
+              <div class="b1-armL"></div><div class="b1-armR"></div>
+              <div class="b1-screen"><div class="b1-bar1"></div><div class="b1-bar2"></div></div>
+            </div>
+            <div class="b1-legs"><div class="b1-leg"></div><div class="b1-leg"></div></div>
+            <div class="b1-feet"><div class="b1-foot"></div><div class="b1-foot"></div></div>
+          </div>
+          <svg width="160" height="40" viewBox="0 0 160 40" style="margin-top:3px;">
+            <defs><radialGradient id="h1g" cx="50%" cy="60%" r="50%"><stop offset="0%" stop-color="#F87171" stop-opacity="0.55"/><stop offset="100%" stop-color="#7F1D1D" stop-opacity="0"/></radialGradient></defs>
+            <ellipse cx="80" cy="24" rx="78" ry="14" fill="url(#h1g)"/>
+            <ellipse cx="80" cy="24" rx="78" ry="14" fill="none" stroke="#F87171" stroke-width="1.3" opacity="0.75"/>
+            <ellipse cx="80" cy="24" rx="60" ry="10" fill="none" stroke="#DC2626" stroke-width="0.9" opacity="0.5"/>
+            <ellipse cx="80" cy="24" rx="40" ry="7" fill="none" stroke="#EF4444" stroke-width="0.9" opacity="0.55"/>
+            <ellipse cx="80" cy="24" rx="22" ry="4" fill="none" stroke="#FCA5A5" stroke-width="1" opacity="0.9"/>
+            <circle cx="80" cy="24" r="3" fill="#FCA5A5" opacity="0.95"/>
+          </svg>
+          <div class="rshadow" style="width:100px;height:12px;margin-top:-6px;"></div>
+        </div>
+        <div class="rw rw2">
+          <div class="bot2">
+            <div class="b2-head"><div class="b2-visor"><div class="b2-eye"></div><div class="b2-eye"></div></div></div>
+            <div class="b2-neck"></div>
+            <div class="b2-body">
+              <div class="b2-armL"></div><div class="b2-armR"></div>
+              <div class="b2-chest"><div class="b2-tbar"></div><div class="b2-vbar"></div></div>
+            </div>
+            <div class="b2-legs"><div class="b2-leg"></div><div class="b2-leg"></div></div>
+            <div class="b2-feet"><div class="b2-foot"></div><div class="b2-foot"></div></div>
+          </div>
+          <svg width="180" height="44" viewBox="0 0 180 44" style="margin-top:3px;">
+            <defs><radialGradient id="h2g" cx="50%" cy="60%" r="50%"><stop offset="0%" stop-color="#F87171" stop-opacity="0.5"/><stop offset="100%" stop-color="#7F1D1D" stop-opacity="0"/></radialGradient></defs>
+            <ellipse cx="90" cy="26" rx="88" ry="16" fill="url(#h2g)"/>
+            <ellipse cx="90" cy="26" rx="88" ry="16" fill="none" stroke="#F87171" stroke-width="1.3" opacity="0.75"/>
+            <ellipse cx="90" cy="26" rx="68" ry="12" fill="none" stroke="#DC2626" stroke-width="0.9" opacity="0.5"/>
+            <ellipse cx="90" cy="26" rx="46" ry="8" fill="none" stroke="#F87171" stroke-width="0.9" opacity="0.55"/>
+            <ellipse cx="90" cy="26" rx="25" ry="4.5" fill="none" stroke="#FCA5A5" stroke-width="1" opacity="0.9"/>
+            <circle cx="90" cy="26" r="3.5" fill="#FCA5A5" opacity="0.95"/>
+          </svg>
+          <div class="rshadow" style="width:116px;height:13px;margin-top:-7px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="features">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-badge">⚡ Four Research Tools</div>
+    <h2 class="section-title">Everything you need to research a stock or a portfolio</h2>
+    <p class="section-sub">Each tool is deliberately built for research and structural risk analysis — not price prediction or buy/sell signals.</p>
+    <div class="factors-grid">
+      <div class="factor-card"><div class="fc-icon">🔎</div><div class="fc-title">Stock Research</div><div class="fc-desc">Company overview, valuation snapshot, and recent headlines for any S&P 500 ticker — synthesized in plain English.</div><span class="fc-tag">SINGLE COMPANY</span></div>
+      <div class="factor-card"><div class="fc-icon">⚖️</div><div class="fc-title">Compare</div><div class="fc-desc">Put 2-4 stocks side by side on P/E, margins, growth, and market cap, with a factual delta summary — no verdict declared.</div><span class="fc-tag">HEAD-TO-HEAD</span></div>
+      <div class="factor-card"><div class="fc-icon">📈</div><div class="fc-title">Portfolio Analysis</div><div class="fc-desc">Deterministic red/yellow/green flags for single-stock concentration, sector concentration, and pairwise correlation.</div><span class="fc-tag">RISK FLAGS</span></div>
+      <div class="factor-card"><div class="fc-icon">🔍</div><div class="fc-title">Discovery</div><div class="fc-desc">Browse all 503 companies grouped into 18 sector/technology themes — AI, semiconductors, biotech, fintech, and more.</div><span class="fc-tag">THEME BROWSING</span></div>
+      <div class="factor-card"><div class="fc-icon">📄</div><div class="fc-title">Multi-Format Input</div><div class="fc-desc">Add holdings by typing them in, uploading a CSV, a broker screenshot, or a PDF statement — all converge to the same review table.</div><span class="fc-tag">FLEXIBLE INPUT</span></div>
+      <div class="factor-card"><div class="fc-icon">⚡</div><div class="fc-title">SQLite Caching</div><div class="fc-desc">Fundamentals cached 24h, live quotes cached 15min — fetch once, reuse across every feature and every session.</div><span class="fc-tag">PERFORMANCE</span></div>
+    </div>
+  </div>
+</section>
+<section id="howitworks">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div class="section-badge">🔬 Architecture</div>
+    <h2 class="section-title">How it's built</h2>
+    <p class="section-sub">Built around one principle: the LLM narrates, it never decides. Every risk flag and every filter is computed deterministically in Python first.</p>
+    <div class="hiw-grid">
+      <div class="hiw-steps">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><div class="step-title">LangGraph Per Feature</div><div class="step-desc">Each tool is its own small LangGraph — fetch nodes run in parallel via ThreadPoolExecutor, then one LLM node writes the plain-English summary.</div></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><div class="step-title">Deterministic Risk Flags</div><div class="step-desc">Portfolio concentration and correlation thresholds are fixed in Python (e.g. >25% single-stock = red). The LLM only narrates flags already computed — it never invents one.</div></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><div class="step-title">Shared Data Layer</div><div class="step-desc">One <strong>yfinance</strong> wrapper and one <strong>SQLite TTL cache</strong> serve all four tools — fetch once, reuse everywhere.</div></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><div class="step-title">Theme Classification</div><div class="step-desc">All 503 companies are batch-classified by business summary into 18 fixed sector/technology themes, cached for 30 days.</div></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><div class="step-title">Multi-Format Parsing</div><div class="step-desc">CSV, screenshot (vision LLM), and PDF (text extraction + LLM) all converge into the same structured holdings table before analysis runs.</div></div></div>
+      </div>
+      <div class="hiw-problems">
+        <div class="prob-title">Design Principles</div>
+        <div class="prob-sub">What this tool deliberately does and doesn't do.</div>
+        <div class="prob-item"><div class="prob-icon">✅</div><div class="prob-text"><div class="prob-head">Research, not prediction</div><div class="prob-body">No directional forecasts, no buy/sell signals — just structural facts and risk flags.</div></div></div>
+        <div class="prob-item"><div class="prob-icon">✅</div><div class="prob-text"><div class="prob-head">Deterministic flags</div><div class="prob-body">Concentration and correlation thresholds are fixed Python logic, not LLM judgment calls.</div></div></div>
+        <div class="prob-item"><div class="prob-icon">✅</div><div class="prob-text"><div class="prob-head">Always reviewable</div><div class="prob-body">Every uploaded holdings extraction (CSV, screenshot, PDF) lands in an editable table before analysis — nothing is trusted blindly.</div></div></div>
+        <div class="prob-item"><div class="prob-icon">✅</div><div class="prob-text"><div class="prob-head">Cache-first</div><div class="prob-body">Fundamentals refresh every 24h, quotes every 15min — fast for repeat lookups, gentle on rate limits.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<section id="cta">
+  <div class="section-badge" style="margin:0 auto 16px;">🚀 Try It Now</div>
+  <h2 class="cta-title">Ready to research a <em>stock or a portfolio</em>?</h2>
+  <p class="cta-sub">Research any S&P 500 company, compare tickers, check your portfolio's risk<br>flags, or browse by theme — all in one place.</p>
+  <button class="cta-btn" onclick="goApp()">Launch the Tools →</button>
+  <div style="margin-top:16px;font-size:11px;color:#1A3A55;">Free to use · No signup required · MSc Applied AI · University of Warwick</div>
+</section>
+<footer>
+  <div style="display:flex;align-items:center;gap:9px;">
+    <div class="nav-icon" style="width:28px;height:28px;font-size:13px;">📊</div>
+    <span style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:#3A6A90;">Retail Research Assistant</span>
+  </div>
+  <div class="footer-text" style="color:#F87171;font-weight:600;font-size:13px;">Built by <span style="color:#FCA5A5;font-weight:700;">Raj Tejpal Khatik</span> · MSc Applied AI · University of Warwick · 2026</div>
+  <div class="footer-right">Research tool<br>Not financial advice</div>
+</footer>
+</div>
+<script>
+function goApp(){window.location.href='http://localhost:8501';}
+var prices={AAPL:{price:338.19,prev:335.40},MSFT:{price:390.54,prev:387.00},NVDA:{price:195.55,prev:194.40},MU:{price:739.00,prev:730.00},AMZN:{price:245.30,prev:243.00},GOOGL:{price:336.71,prev:334.20},META:{price:585.61,prev:580.00},TSLA:{price:410.20,prev:405.00},JPM:{price:298.40,prev:296.10},AMD:{price:429.56,prev:425.00}};
+function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function buildTape(){var h='';for(var i=0;i<2;i++){Object.entries(prices).forEach(function(e){var s=e[0],d=e[1],c=d.price-d.prev,p=c/d.prev*100,u=c>=0;h+=`<div class="ti"><div class="dot ${u?'udt':'ddt'}"></div><span class="tsym">${s}</span><span class="tprice">$${fmt(d.price)}</span><span class="tchg ${u?'up':'dn'}">${u?'▲':'▼'} ${Math.abs(p).toFixed(2)}%</span></div>`;});}document.getElementById('tape').innerHTML=h;}
+function jiggle(){Object.keys(prices).forEach(function(k){var d=prices[k],x=(Math.random()-0.48)*d.price*0.002;d.prev=d.price;d.price=Math.max(d.price+x,1);});buildTape();}
+var lsigs=[
+  ["🔴 MU concentration: 43% flagged","🔍 34 Biotech companies found","📈 AAPL profile ready","📄 PDF statement parsed"],
+  ["🟢 Portfolio diversification: fine","🔍 30 Semiconductor matches","⚖️ NVDA vs AMD compared","🟡 Tech sector: 38% weight"],
+  ["🔍 42 Fintech companies found","📈 MSFT valuation snapshot","🔴 Correlation flag: 2 pairs","🟢 Cache hit: instant lookup"],
+  ["🔍 40 Cloud & Data companies","📈 TSLA news summary ready","⚖️ AAPL vs GOOGL compared","🟢 Sector spread: healthy"],
+];
+var rsigs=[
+  ["🟢 Portfolio correlation: low","⚖️ AAPL vs MSFT compared","🔍 30 Semiconductor matches","🟢 Sector diversification: fine"],
+  ["🔴 Single-stock flag: MU 43%","🔍 18 theme buckets ready","📄 CSV holdings extracted","🟢 No red flags detected"],
+  ["🔍 14 Defense & Aerospace found","📈 AMZN profile ready","⚖️ NVDA vs MU compared","🟡 Concentration: moderate"],
+  ["🔍 11 Solar Energy companies","📄 Screenshot extraction done","🟢 Correlation below 0.70","📈 JPM valuation snapshot"],
+];
+var li=0,ri=0;
+var lb=[document.getElementById('bl1'),document.getElementById('bl2'),document.getElementById('bl3'),document.getElementById('bl4')];
+var rb=[document.getElementById('br1'),document.getElementById('br2'),document.getElementById('br3'),document.getElementById('br4')];
+setInterval(function(){
+  li=(li+1)%lsigs.length;
+  lb.forEach(function(b){b.style.opacity='0';});
+  setTimeout(function(){lb.forEach(function(b,i){b.textContent=lsigs[li][i];b.style.opacity='1';});},450);
+},5000);
+setInterval(function(){
+  ri=(ri+1)%rsigs.length;
+  rb.forEach(function(b){b.style.opacity='0';});
+  setTimeout(function(){rb.forEach(function(b,i){b.textContent=rsigs[ri][i];b.style.opacity='1';});},450);
+},4200);
+buildTape();
+setInterval(jiggle,3000);
+function closeWelcomeModal(){
+  document.getElementById('welcomeModal').style.display='none';
+  localStorage.setItem('rra_welcomed','true');
+}
+if(!localStorage.getItem('rra_welcomed')){
+  document.getElementById('welcomeModal').style.display='flex';
+}
+</script>
+</body>
+</html>
