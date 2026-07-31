@@ -15,6 +15,7 @@ NAV_ITEMS = [
     {"label": "Compare", "path": "/Compare"},
     {"label": "Portfolio", "path": "/Portfolio"},
     {"label": "Discovery", "path": "/Discovery"},
+    {"label": "Learning", "path": "/Learning"},
 ]
 
 
