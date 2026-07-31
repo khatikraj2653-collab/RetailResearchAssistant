@@ -220,21 +220,28 @@ if st.session_state.portfolio_result:
     safe_summary = result["summary"].replace("$", "\\$")
     st.markdown(safe_summary)
 
-    if diff and (diff["added"] or diff["removed"] or diff["changed_shares"] or diff["weight_changes"] or diff["sector_changes"]):
+    if diff is not None:
         st.subheader("What Changed Since Your Last Analysis")
         st.caption("Purely factual — describes what changed, not whether it was a good or bad move.")
-        for t in diff["added"]:
-            st.write(f"➕ Added **{t}**")
-        for t in diff["removed"]:
-            st.write(f"➖ Removed **{t}**")
-        for c in diff["changed_shares"]:
-            st.write(f"🔄 **{c['ticker']}**: {c['old_shares']} → {c['new_shares']} shares")
-        for w in diff["weight_changes"]:
-            direction = "increased" if w["delta"] > 0 else "decreased"
-            st.write(f"📊 **{w['ticker']}** concentration {direction}: {w['old_weight']*100:.1f}% → {w['new_weight']*100:.1f}%")
-        for s in diff["sector_changes"]:
-            direction = "increased" if s["delta"] > 0 else "decreased"
-            st.write(f"🏷️ **{s['sector']}** exposure {direction}: {s['old_weight']*100:.1f}% → {s['new_weight']*100:.1f}%")
+        has_any_change = (
+            diff["added"] or diff["removed"] or diff["changed_shares"]
+            or diff["weight_changes"] or diff["sector_changes"]
+        )
+        if not has_any_change:
+            st.write("🟢 No changes detected since your last saved analysis.")
+        else:
+            for t in diff["added"]:
+                st.write(f"➕ Added **{t}**")
+            for t in diff["removed"]:
+                st.write(f"➖ Removed **{t}**")
+            for c in diff["changed_shares"]:
+                st.write(f"🔄 **{c['ticker']}**: {c['old_shares']} → {c['new_shares']} shares")
+            for w in diff["weight_changes"]:
+                direction = "increased" if w["delta"] > 0 else "decreased"
+                st.write(f"📊 **{w['ticker']}** concentration {direction}: {w['old_weight']*100:.1f}% → {w['new_weight']*100:.1f}%")
+            for s in diff["sector_changes"]:
+                direction = "increased" if s["delta"] > 0 else "decreased"
+                st.write(f"🏷️ **{s['sector']}** exposure {direction}: {s['old_weight']*100:.1f}% → {s['new_weight']*100:.1f}%")
 
     st.markdown("---")
     st.markdown("#### Ask a follow-up question")

@@ -1,0 +1,6 @@
+﻿test_partial_trim: PASS
+test_multi_holding_rebalance: PASS
+test_no_change: PASS
+test_new_user_returns_none: PASS
+
+All portfolio diff tests passed.
