@@ -26,7 +26,7 @@ with col1:
 with col2:
     gradient_stat_card("Theme Buckets", "18", "Sector & technology groups", icon="🔍")
 with col3:
-    gradient_stat_card("Research Tools", "4", "Built for research, not prediction", icon="⚡")
+    gradient_stat_card("Research Tools", "5", "Built for research, not prediction", icon="⚡")
 
 st.write("")
 st.write("")
@@ -59,6 +59,13 @@ FEATURES = [
         "description": "Browse the S&P 500 by sector/technology theme — AI, semiconductors, biotech, and more.",
         "tags": ["18 themes", "503 companies"],
         "page": "pages/4_Discovery.py",
+    },
+    {
+        "icon": "📚",
+        "label": "Learning",
+        "description": "Five original chapters on stock market fundamentals, downloadable, with a chapter-scoped Q&A assistant.",
+        "tags": ["5 chapters", "Downloadable"],
+        "page": "pages/5_Learning.py",
     },
 ]
 
