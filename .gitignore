@@ -10,3 +10,5 @@ universe_cache.json
 theme_classification.json
 __pycache__/
 *.pyc
+data/_sp500_last_known_good.json
+data/_ticker_last_known_good.json

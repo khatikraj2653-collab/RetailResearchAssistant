@@ -1,16 +1,19 @@
 """
-Live scrolling ticker tape — top 30 S&P 500 companies by market cap,
-light theme to match Sovrenn's clean aesthetic.
+Live scrolling ticker tape — top 30 S&P 500 companies by market cap.
 
-get_tape_data() is the single source of real, cached, live price data
-(15-minute TTL). Both the bottom-fixed in-app ticker (render_ticker_tape,
-used on Dashboard/Stock Research/etc.) and the landing page's top ticker
-strip (built server-side in frontend/app.py) build their HTML markup
-from this same shared, real data -- so there is exactly one live data
-source, not two separately-fetched or fake copies.
+Fallback policy: if a live yfinance fetch ever fails, this falls back to
+the last successfully-fetched REAL data, persisted to a small local
+JSON file. It never fabricates numbers and never shows a static demo
+value pretending to be current -- it either shows fresh data or the
+most recent real data actually observed. Only on a true first-ever-run
+failure (no successful fetch has EVER happened) does it show "N/A" for
+an individual ticker, which is an honest statement, not fake data.
 """
 import streamlit as st
 import yfinance as yf
+import json
+import os
+from pathlib import Path
 
 TOP30 = [
     "AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META", "AVGO", "TSLA",
@@ -19,18 +22,41 @@ TOP30 = [
     "KO", "PLTR", "GE", "CVX", "TMUS", "WFC",
 ]
 
+_FALLBACK_PATH = Path(__file__).resolve().parent / "_ticker_last_known_good.json"
 
-@st.cache_data(ttl=900)
+
+def _save_fallback(rows):
+    try:
+        with open(_FALLBACK_PATH, "w", encoding="utf-8") as f:
+            json.dump(rows, f)
+    except Exception:
+        pass
+
+
+def _load_fallback():
+    try:
+        if _FALLBACK_PATH.exists():
+            with open(_FALLBACK_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+    except Exception:
+        pass
+    return None
+
+
+@st.cache_data(ttl=300)
 def get_tape_data():
-    """Returns a list of dicts: [{ticker, price, change_pct, up}, ...]
-    for TOP30, using real live/recent yfinance data. Cached 15 minutes
-    so this is the single fetch shared by every consumer."""
-    results = []
+    """Returns a list of dicts: [{ticker, price, change_pct, up, available}, ...].
+    Tries a fresh live fetch first. On success, persists it as the new
+    last-known-good fallback. On failure, falls back to the last
+    successfully-fetched REAL data rather than showing nothing or
+    inventing anything."""
     try:
         data = yf.download(
             tickers=" ".join(TOP30), period="5d", interval="1d",
             group_by="ticker", threads=True, progress=False,
         )
+        results = []
+        any_success = False
         for t in TOP30:
             try:
                 closes = data[t]["Close"].dropna()
@@ -44,23 +70,31 @@ def get_tape_data():
                     "ticker": t, "price": price, "change_pct": abs(pct),
                     "up": change >= 0, "available": True,
                 })
+                any_success = True
             except Exception:
                 results.append({
                     "ticker": t, "price": None, "change_pct": None,
                     "up": None, "available": False,
                 })
+
+        if any_success:
+            _save_fallback(results)
+            return results
+        raise ValueError("no tickers returned usable data this fetch")
+
     except Exception:
-        for t in TOP30:
-            results.append({
-                "ticker": t, "price": None, "change_pct": None,
-                "up": None, "available": False,
-            })
-    return results
+        fallback = _load_fallback()
+        if fallback:
+            return fallback
+        # True first-ever-run failure with no prior real data saved yet.
+        return [
+            {"ticker": t, "price": None, "change_pct": None, "up": None, "available": False}
+            for t in TOP30
+        ]
 
 
 def get_tape_prices():
-    """HTML fragment for the bottom-fixed in-app ticker (dark-on-light
-    inline-styled spans), built from the shared get_tape_data()."""
+    """HTML fragment for the bottom-fixed in-app ticker."""
     rows = []
     for row in get_tape_data():
         if row["available"]:

@@ -52,6 +52,28 @@ body{background:#F8FAFC;font-family:'Inter',sans-serif;overflow-x:hidden;color:#
 .stat-num{font-family:'Space Grotesk',sans-serif;font-size:1.5rem;font-weight:700;color:#0D9488;}
 .stat-lbl{font-size:10px;color:#64748B;margin-top:3px;font-weight:500;letter-spacing:0.04em;}
 
+.hero-grid{display:grid;grid-template-columns:0.85fr 1.3fr;gap:36px;align-items:center;}
+.hero-right{display:flex;justify-content:center;}
+.sp-chart-card{width:100%;max-width:660px;background:#FFFFFF;border:1px solid #E2E8F0;border-radius:18px;padding:28px 30px;box-shadow:0 16px 40px rgba(15,23,42,0.1);}
+.sp-chart-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+.sp-chart-label{font-family:'Space Grotesk',sans-serif;font-size:1.3rem;font-weight:700;color:#0F172A;}
+.sp-chart-sublabel{font-size:0.78rem;color:#94A3B8;margin-top:1px;}
+.sp-chart-row{display:flex;align-items:baseline;gap:12px;margin:10px 0 2px;flex-wrap:wrap;}
+.sp-chart-value{font-family:'Space Grotesk',sans-serif;font-size:2.6rem;font-weight:700;color:#0F172A;}
+.sp-chart-badge{font-size:0.9rem;font-weight:600;padding:4px 12px;border-radius:7px;}
+.sp-chart-change{font-size:0.9rem;font-weight:600;}
+.sp-chart-sub{font-size:0.75rem;color:#94A3B8;margin-bottom:16px;}
+.sp-tabs{display:flex;gap:4px;border-bottom:1px solid #E2E8F0;margin-bottom:8px;flex-wrap:wrap;}
+.sp-tab{background:none;border:none;padding:8px 14px;font-size:0.82rem;font-weight:600;color:#64748B;cursor:pointer;border-bottom:2px solid transparent;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.sp-tab:hover{color:#0D9488;}
+.sp-tab.active{color:#0D9488;border-bottom-color:#0D9488;}
+.sp-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px 24px;margin-top:20px;padding-top:16px;border-top:1px solid #F1F5F9;}
+.sp-stats-grid > div{display:flex;justify-content:space-between;font-size:0.85rem;}
+.sp-stat-label{color:#64748B;}
+.sp-stat-value{color:#0F172A;font-weight:600;}
+.sp-chart-empty{width:100%;max-width:660px;background:#FFFFFF;border:1px dashed #E2E8F0;border-radius:18px;padding:60px 32px;text-align:center;color:#94A3B8;font-size:0.9rem;}
+@media (max-width: 950px){.hero-grid{grid-template-columns:1fr;}.hero-right{margin-top:24px;}}
+
 /* ---- Dashboard-style feature grid (matches the real in-app Dashboard) ---- */
 #dashboard-preview{position:relative;z-index:5;padding:80px 32px 100px;background:#FFFFFF;}
 .dp-inner{max-width:1440px;margin:0 auto;}
@@ -140,23 +162,28 @@ footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F
 <div class="ticker"><div class="tape" id="tape"><!--LIVE_TICKER_ITEMS--></div></div>
 
 <section id="hero">
-  <div class="hero-inner">
-    <div class="badge"><div class="bdot"></div> LIVE · Full S&P 500 Coverage</div>
-    <h1 class="hero-title">S&P 500<br><em>Research Intelligence</em><br>Powered by AI</h1>
-    <p class="hero-desc">Five tools built for <strong>research, not prediction</strong>: get a plain-English profile on any S&P 500 company, compare stocks side by side, check your portfolio for concentration and correlation risk, discover companies by sector or technology theme, and learn stock market fundamentals — all across <strong>503 constituents</strong>.</p>
-    <div class="chips">
-      <span class="chip">LangGraph</span><span class="chip">yfinance</span><span class="chip">GPT-4o-mini</span>
-      <span class="chip">SQLite Cache</span><span class="chip">Streamlit</span>
+  <div class="hero-inner hero-grid">
+    <div class="hero-left">
+      <div class="badge"><div class="bdot"></div> LIVE · Full S&P 500 Coverage</div>
+      <h1 class="hero-title">S&P 500<br><em>Research Intelligence</em><br>Powered by AI</h1>
+      <p class="hero-desc">Five tools built for <strong>research, not prediction</strong>: get a plain-English profile on any S&P 500 company, compare stocks side by side, check your portfolio for concentration and correlation risk, discover companies by sector or technology theme, and learn stock market fundamentals — all across <strong>503 constituents</strong>.</p>
+      <div class="chips">
+        <span class="chip">LangGraph</span><span class="chip">yfinance</span><span class="chip">GPT-4o-mini</span>
+        <span class="chip">SQLite Cache</span><span class="chip">Streamlit</span>
+      </div>
+      <div class="ctas">
+        <button class="btn-primary" onclick="goApp()">Explore the Tools →</button>
+        <button class="btn-secondary" onclick="document.getElementById('howitworks').scrollIntoView({behavior:'smooth'})">How it works</button>
+      </div>
+      <div class="stats">
+        <div><div class="stat-num">5</div><div class="stat-lbl">RESEARCH TOOLS</div></div>
+        <div><div class="stat-num">503</div><div class="stat-lbl">COMPANIES COVERED</div></div>
+        <div><div class="stat-num">18</div><div class="stat-lbl">THEME BUCKETS</div></div>
+        <div><div class="stat-num">MSc</div><div class="stat-lbl">WARWICK AI</div></div>
+      </div>
     </div>
-    <div class="ctas">
-      <button class="btn-primary" onclick="goApp()">Explore the Tools →</button>
-      <button class="btn-secondary" onclick="document.getElementById('howitworks').scrollIntoView({behavior:'smooth'})">How it works</button>
-    </div>
-    <div class="stats">
-      <div><div class="stat-num">5</div><div class="stat-lbl">RESEARCH TOOLS</div></div>
-      <div><div class="stat-num">503</div><div class="stat-lbl">COMPANIES COVERED</div></div>
-      <div><div class="stat-num">18</div><div class="stat-lbl">THEME BUCKETS</div></div>
-      <div><div class="stat-num">MSc</div><div class="stat-lbl">WARWICK AI</div></div>
+    <div class="hero-right">
+      <!--SP500_CHART-->
     </div>
   </div>
 </section>
