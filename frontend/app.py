@@ -3,7 +3,13 @@ import os
 import sys
 from pathlib import Path
 
+# frontend/app.py needs the PROJECT ROOT on sys.path (not just the
+# frontend/ folder) because data/ticker_tape.py and data/yfinance_client.py
+# live one level up, as a sibling to frontend/. Without this, both
+# imports below silently fail and fall back to their "unavailable"
+# messages -- which is exactly what was happening.
 sys.path.append(str(Path(__file__).resolve().parent))
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 st.set_page_config(
     page_title="Retail Research Assistant",
