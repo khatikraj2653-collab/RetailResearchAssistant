@@ -18,6 +18,11 @@ from style import apply_style
 st.set_page_config(page_title="Learning", page_icon="📚", layout="wide")
 apply_style()
 
+from log_client import log_event
+if "visit_logged_learning" not in st.session_state:
+    st.session_state.visit_logged_learning = True
+    log_event("visit", detail="Learning page")
+
 from nav_bar import render_nav_bar
 render_nav_bar(active="Learning")
 

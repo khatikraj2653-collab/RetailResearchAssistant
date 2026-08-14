@@ -19,6 +19,11 @@ from style import apply_style
 st.set_page_config(page_title="Portfolio Analysis", page_icon="📈", layout="wide")
 apply_style()
 
+from log_client import log_event
+if "visit_logged_portfolio" not in st.session_state:
+    st.session_state.visit_logged_portfolio = True
+    log_event("visit", detail="Portfolio page")
+
 from nav_bar import render_nav_bar
 render_nav_bar(active="Portfolio")
 

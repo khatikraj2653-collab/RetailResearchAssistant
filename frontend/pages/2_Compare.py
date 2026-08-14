@@ -19,6 +19,11 @@ from data.history_store import save_history, load_history
 st.set_page_config(page_title="Compare", page_icon="⚖️", layout="wide")
 apply_style()
 
+from log_client import log_event
+if "visit_logged_compare" not in st.session_state:
+    st.session_state.visit_logged_compare = True
+    log_event("visit", detail="Compare page")
+
 from nav_bar import render_nav_bar
 render_nav_bar(active="Compare")
 
