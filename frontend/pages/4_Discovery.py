@@ -23,6 +23,11 @@ from style import apply_style
 st.set_page_config(page_title="Discovery", page_icon="🔍", layout="wide")
 apply_style()
 
+from log_client import log_event
+if "visit_logged_discovery" not in st.session_state:
+    st.session_state.visit_logged_discovery = True
+    log_event("visit", detail="Discovery page")
+
 from nav_bar import render_nav_bar
 render_nav_bar(active="Discovery")
 

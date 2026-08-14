@@ -12,6 +12,11 @@ from components import gradient_stat_card
 st.set_page_config(page_title="Retail Research Assistant", page_icon="📊", layout="wide")
 apply_style()
 
+from log_client import log_event
+if "visit_logged_dashboard" not in st.session_state:
+    st.session_state.visit_logged_dashboard = True
+    log_event("visit", detail="Dashboard page")
+
 from nav_bar import render_nav_bar
 render_nav_bar(active="Dashboard")
 

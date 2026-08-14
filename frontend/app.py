@@ -14,6 +14,11 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+from log_client import log_event
+if "visit_logged_landing" not in st.session_state:
+    st.session_state.visit_logged_landing = True
+    log_event("visit", detail="landing page")
+
 st.markdown("""
 <style>
 #MainMenu, footer, header { visibility: hidden; }
