@@ -133,6 +133,27 @@ body{background:#F8FAFC;font-family:'Inter',sans-serif;overflow-x:hidden;color:#
 .cta-sub{font-size:0.85rem;color:#64748B;margin-bottom:32px;line-height:1.8;}
 .cta-btn{background:#0D9488;color:#fff;border:none;border-radius:12px;padding:16px 40px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;box-shadow:0 10px 26px rgba(13,148,136,0.3);transition:all 0.22s;}
 .cta-btn:hover{background:#0B7C68;box-shadow:0 14px 32px rgba(13,148,136,0.4);transform:translateY(-2px);}
+#contact{position:relative;z-index:5;padding:64px 48px;text-align:center;background:#FFFFFF;border-top:1px solid #E2E8F0;}
+.contact-title{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:700;color:#0F172A;margin-bottom:8px;}
+.contact-sub{font-size:0.8rem;color:#64748B;margin-bottom:28px;}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:#E2E8F0;border:1px solid #E2E8F0;
+  max-width:680px;margin:0 auto;text-align:left;
+}
+.contact-grid a{
+  background:#FFFFFF;padding:22px 24px;display:flex;flex-direction:column;gap:6px;
+  text-decoration:none;transition:background .15s ease;
+}
+.contact-grid a:hover{background:#ECFDF5;}
+.contact-label{
+  font-family:'Space Grotesk',sans-serif;font-size:10.5px;text-transform:uppercase;
+  letter-spacing:0.08em;color:#64748B;
+}
+.contact-value{font-size:15px;font-weight:600;color:#0F172A;word-break:break-word;}
+@media (max-width:600px){
+  .contact-grid{grid-template-columns:1fr;}
+}
 footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F0;background:#FFFFFF;display:flex;align-items:center;justify-content:space-between;}
 .footer-text{font-size:11px;color:#64748B;}
 .footer-right{font-size:11px;color:#64748B;text-align:right;}
@@ -290,6 +311,37 @@ footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F
   <p class="cta-sub">Research any S&P 500 company, compare tickers, check your portfolio's risk<br>flags, browse by theme, or learn the fundamentals — all in one place.</p>
   <button class="cta-btn" onclick="goApp()">Launch the Tools →</button>
   <div style="margin-top:16px;font-size:11px;color:#64748B;">Free to use · No signup required · MSc Applied AI · University of Warwick</div>
+</section>
+
+<section id="contact">
+  <div class="contact-title">Built by Raj Tejpal Khatik</div>
+  <div class="contact-sub">MSc Applied AI, University of Warwick — open to AI/ML Engineer &amp; Agentic AI roles</div>
+  <div class="contact-grid">
+    <a href="mailto:khatikraj2653@gmail.com">
+      <span class="contact-label">Personal email</span>
+      <span class="contact-value">khatikraj2653@gmail.com</span>
+    </a>
+    <a href="mailto:Raj.Khatik@warwick.ac.uk">
+      <span class="contact-label">University email</span>
+      <span class="contact-value">Raj.Khatik@warwick.ac.uk</span>
+    </a>
+    <a href="https://www.linkedin.com/in/raj-khatik-6ab086395" target="_blank" rel="noopener">
+      <span class="contact-label">LinkedIn</span>
+      <span class="contact-value">linkedin.com/in/raj-khatik-6ab086395</span>
+    </a>
+    <a href="https://github.com/khatikraj2653-collab" target="_blank" rel="noopener">
+      <span class="contact-label">GitHub</span>
+      <span class="contact-value">github.com/khatikraj2653-collab</span>
+    </a>
+    <a href="https://wa.me/447799394985" target="_blank" rel="noopener">
+      <span class="contact-label">Phone / WhatsApp</span>
+      <span class="contact-value">+44 7799 394985</span>
+    </a>
+    <a href="https://portfolio-raj.pages.dev" target="_blank" rel="noopener">
+      <span class="contact-label">Portfolio</span>
+      <span class="contact-value">portfolio-raj.pages.dev</span>
+    </a>
+  </div>
 </section>
 
 <footer>
