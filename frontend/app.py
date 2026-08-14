@@ -328,3 +328,27 @@ body { background: #F8FAFC !important; }
 html_content = html_content.replace("<head>", "<head>" + iframe_fixes)
 
 st.components.v1.html(html_content, height=4650, scrolling=True)
+
+# Fixed bottom ticker rendered at the top-level Streamlit DOM (outside the
+# iframe above) so `position:fixed` pins to the real browser viewport --
+# a fixed element inside the iframe can only pin to the iframe's own box,
+# which is as tall as the whole embedded page, so it would only become
+# visible once scrolled all the way down.
+st.markdown(f"""
+<style>
+[data-testid="stAppViewContainer"], [data-testid="stMain"] {{ padding-bottom: 48px !important; }}
+.rr-fixed-ticker{{position:fixed;left:0;right:0;bottom:0;z-index:999999;background:#FFFFFF;border-top:1px solid #E5E7EB;padding:8px 0;overflow:hidden;box-shadow:0 -4px 14px rgba(15,23,42,0.08);}}
+.rr-fixed-ticker .tape{{display:flex;animation:rr-scroll 75s linear infinite;width:max-content;}}
+.rr-fixed-ticker .ti{{display:flex;align-items:center;gap:8px;padding:0 26px;border-right:1px solid #F1F5F9;}}
+.rr-fixed-ticker .tsym{{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:#334155;}}
+.rr-fixed-ticker .tprice{{font-size:12px;font-weight:600;color:#0F172A;}}
+.rr-fixed-ticker .tchg{{font-size:11px;font-weight:600;padding:1px 7px;border-radius:4px;}}
+.rr-fixed-ticker .up{{color:#0F9D6C;background:rgba(15,157,108,0.1);}}
+.rr-fixed-ticker .dn{{color:#DC2626;background:rgba(220,38,38,0.1);}}
+.rr-fixed-ticker .dot{{width:5px;height:5px;border-radius:50%;}}
+.rr-fixed-ticker .udt{{background:#0F9D6C;box-shadow:0 0 5px rgba(15,157,108,0.6);}}
+.rr-fixed-ticker .ddt{{background:#DC2626;box-shadow:0 0 5px rgba(220,38,38,0.6);}}
+@keyframes rr-scroll{{0%{{transform:translateX(0);}}100%{{transform:translateX(-50%);}}}}
+</style>
+<div class="rr-fixed-ticker"><div class="tape">{build_landing_ticker_html()}</div></div>
+""", unsafe_allow_html=True)
