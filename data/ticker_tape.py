@@ -121,12 +121,20 @@ def render_ticker_tape():
     st.markdown(
         f"""
         <style>
-        .ticker-wrap {{
-            position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+        html, body, .stApp, [data-testid="stAppViewContainer"], [data-testid="stMain"] {{
+            transform: none !important; filter: none !important;
+            perspective: none !important; will-change: auto !important;
+            contain: none !important;
+        }}
+        div.ticker-wrap {{
+            position: fixed !important;
+            bottom: 0 !important; left: 0 !important; right: 0 !important; top: auto !important;
+            z-index: 2147483647 !important;
             background: #FFFFFF;
             border-top: 1px solid #E5E7EB;
             padding: 8px 0; overflow: hidden;
             box-shadow: 0 -2px 8px rgba(15,23,42,0.05);
+            pointer-events: none;
         }}
         .ticker-move {{
             display: inline-block; white-space: nowrap;
@@ -137,7 +145,7 @@ def render_ticker_tape():
             0% {{ transform: translateX(100vw); }}
             100% {{ transform: translateX(-100%); }}
         }}
-        .block-container {{ padding-bottom: 60px !important; }}
+        .block-container, [data-testid="stMainBlockContainer"] {{ padding-bottom: 60px !important; }}
         </style>
         <div class='ticker-wrap'>
             <div class='ticker-move'>{ticker_html}&nbsp;&nbsp;&nbsp;&nbsp;{ticker_html}</div>
