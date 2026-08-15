@@ -68,6 +68,17 @@ st.markdown("""
 </script>
 """, unsafe_allow_html=True)
 
+# Google Analytics (GA4)
+st.markdown("""
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K7CLRZWY6R"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-K7CLRZWY6R');
+</script>
+""", unsafe_allow_html=True)
+
 from log_client import log_event
 if "visit_logged_landing" not in st.session_state:
     st.session_state.visit_logged_landing = True
