@@ -25,7 +25,7 @@ from langgraph.graph import StateGraph, END
 
 from data.yfinance_client import get_company_info, get_quote, get_price_history
 
-llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2)
+llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2)
 
 # --- Thresholds (deterministic, not LLM-decided) ---
 SINGLE_STOCK_RED = 0.25

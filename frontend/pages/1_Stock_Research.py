@@ -161,7 +161,7 @@ if st.session_state.research_result:
                 f"Same-sector peers (used as a proxy for competitors): {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2).bind_tools([lookup_company])
 
         prior_sessions_for_ticker = load_history("stock_research", ticker, limit=5)
         prior_summary = [

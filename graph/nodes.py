@@ -12,7 +12,7 @@ from langchain_openai import ChatOpenAI
 
 from data.yfinance_client import get_company_info, get_quote, get_recent_news
 
-llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2)
+llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2)
 
 
 class ResearchState(TypedDict, total=False):

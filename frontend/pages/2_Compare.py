@@ -171,7 +171,7 @@ if st.session_state.compare_results:
                 f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2).bind_tools([lookup_company])
 
         compare_context = "\n".join(
             f"{t}: sector={results[t].get('info', {}).get('sector')}, "

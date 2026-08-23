@@ -21,7 +21,7 @@ from pypdf import PdfReader
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage
 
-llm = ChatOpenAI(model="gpt-5-nano", temperature=0)
+llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0)
 
 EXTRACTION_INSTRUCTIONS = """Extract stock holdings from this content. For
 each holding, identify the ticker symbol (or company name if no ticker is
