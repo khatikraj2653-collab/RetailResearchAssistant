@@ -22,7 +22,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 from tests.full_adversarial_questions import ALL_QUESTIONS, RED_FLAG_PHRASES
 from data.learning_content import CHAPTERS
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2)
 
 
 def stock_research_prompt():

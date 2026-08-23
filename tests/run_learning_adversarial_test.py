@@ -68,7 +68,7 @@ RULES:
 """
 
 def run_test():
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+    llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2)
     results = []
 
     for i, question in enumerate(ADVERSARIAL_QUESTIONS, 1):

@@ -165,7 +165,7 @@ else:
                     f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
                 )
 
-            chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
+            chat_llm = ChatOpenAI(model="gpt-5-nano", temperature=0.2).bind_tools([lookup_company])
 
             company_list = ", ".join(f"{c['name']} ({c['ticker']})" for c in companies[:20])
             system_prompt = f"""You are the Retail Research Assistant's
