@@ -4,6 +4,9 @@ An S&P 500 research platform: an agentic assistant that pulls market data and he
 
 **Live app:** https://retailresearch-raj.streamlit.app/
 
+## Demo
+![RetailResearchAssistant demo](retailresearch-demo.gif)
+
 ## Stack
 - Streamlit (frontend)
 - LangGraph + LangChain (OpenAI) — agent orchestration
