@@ -4,6 +4,9 @@ An S&P 500 research platform: an agentic assistant that pulls market data and he
 
 **Live app:** https://retailresearch-raj.streamlit.app/
 
+## Key results
+Covers all 503 S&P 500 constituents across six pages. Passed a 100-question adversarial safety test (100/100; results committed in this repo). Implements 9 of 10 recognised agentic-AI design patterns; the one omission (MCP) is deliberate. The assistant explains what the data shows and never recommends what to buy.
+
 ## Demo
 ![RetailResearchAssistant demo](retailresearch-demo.gif)
 
