@@ -286,7 +286,7 @@ if st.session_state.portfolio_result:
                 f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
 
         holdings_summary = ", ".join(f"{h['ticker']} ({h['shares']} shares)" for h in holdings)
         diff_summary = "No previous portfolio saved to compare against." if not diff else str(diff)

@@ -22,7 +22,7 @@ from data.yfinance_client import (
 )
 from data.macro_tools import get_macro_snapshot
 
-llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 
 class DeepResearchState(TypedDict, total=False):

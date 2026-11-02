@@ -19,7 +19,7 @@ from langgraph.graph import StateGraph, END
 
 from graph.deep_research_workflow import research_subgraph
 
-llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0.2)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
 
 
 class CompareState(TypedDict, total=False):

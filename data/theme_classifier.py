@@ -24,7 +24,7 @@ CLASSIFICATION_CACHE_PATH = Path("theme_classification.json")
 CLASSIFICATION_TTL_SECONDS = 30 * 24 * 60 * 60  # 30 days
 BATCH_SIZE = 15
 
-llm = ChatOpenAI(model="gpt-4.1-nano", temperature=0)
+llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
 
 CLASSIFY_PROMPT = """Classify each company below into zero or more of these
 themes, based on its business summary. Only assign a theme if the
