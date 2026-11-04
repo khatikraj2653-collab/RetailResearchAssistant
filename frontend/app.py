@@ -230,7 +230,8 @@ def build_sp500_chart_html():
     )
 
     return f'''
-    <div class="sp-chart-card">
+    <div class="sp-chart-card tilt">
+        <div class="sp-glare"></div>
         <div class="sp-chart-top">
             <div>
                 <div class="sp-chart-label">S&P 500</div>
@@ -253,6 +254,7 @@ def build_sp500_chart_html():
             <polygon id="sp-fill" points="" fill="url(#spg)"/>
             <polyline id="sp-line" points="" fill="none" stroke="{color}" stroke-width="2"/>
         </svg>
+        <div id="sp-3d"><canvas id="sp-terrain" role="img" aria-label="S&P 500 price history as a 3D layered terrain. Drag to rotate."></canvas></div>
         <div class="sp-stats-grid">
             <div><span class="sp-stat-label">Open</span><span class="sp-stat-value">{payload["open"]:,.2f}</span></div>
             <div><span class="sp-stat-label">High</span><span class="sp-stat-value">{payload["high"]:,.2f}</span></div>
@@ -284,6 +286,7 @@ def build_sp500_chart_html():
         document.querySelectorAll(".sp-tab").forEach(function(btn) {{
             btn.classList.toggle("active", btn.getAttribute("data-period") === period);
         }});
+        if (window.__spTerrain) window.__spTerrain.set(data);
     }}
     renderSPChart("1D");
     </script>
