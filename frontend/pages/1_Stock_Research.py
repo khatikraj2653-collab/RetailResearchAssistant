@@ -17,6 +17,10 @@ from graph.deep_research_workflow import run_deep_research
 from data.history_store import save_history, load_history
 
 st.set_page_config(page_title="Stock Research", page_icon="🔎", layout="wide")
+
+from loader import show_loader
+_loader = show_loader("Loading Stock Research…")
+
 apply_style()
 
 from log_client import log_event
@@ -238,3 +242,5 @@ RULES:
 
 from data.ticker_tape import render_ticker_tape
 render_ticker_tape()
+
+_loader.empty()

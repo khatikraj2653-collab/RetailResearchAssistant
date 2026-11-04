@@ -10,6 +10,10 @@ from style import apply_style
 from components import gradient_stat_card
 
 st.set_page_config(page_title="Retail Research Assistant", page_icon="📊", layout="wide")
+
+from loader import show_loader
+_loader = show_loader("Loading Dashboard…")
+
 apply_style()
 
 from log_client import log_event
@@ -100,3 +104,5 @@ st.info(
 
 from data.ticker_tape import render_ticker_tape
 render_ticker_tape()
+
+_loader.empty()

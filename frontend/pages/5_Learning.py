@@ -16,6 +16,9 @@ from data.learning_content import CHAPTERS, DISCLAIMER, get_chapter, build_full_
 from style import apply_style
 
 st.set_page_config(page_title="Learning", page_icon="📚", layout="wide")
+
+from loader import show_loader
+_loader = show_loader("Loading Learning…")
 apply_style()
 
 from log_client import log_event
@@ -190,3 +193,5 @@ RULES:
 
 from data.ticker_tape import render_ticker_tape
 render_ticker_tape()
+
+_loader.empty()

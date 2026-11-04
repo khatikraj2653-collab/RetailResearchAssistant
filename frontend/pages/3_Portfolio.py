@@ -17,6 +17,9 @@ from data.history_store import save_history, load_history, load_most_recent
 from style import apply_style
 
 st.set_page_config(page_title="Portfolio Analysis", page_icon="📈", layout="wide")
+
+from loader import show_loader
+_loader = show_loader("Loading Portfolio…")
 apply_style()
 
 from log_client import log_event
@@ -363,3 +366,5 @@ RULES:
 
 from data.ticker_tape import render_ticker_tape
 render_ticker_tape()
+
+_loader.empty()

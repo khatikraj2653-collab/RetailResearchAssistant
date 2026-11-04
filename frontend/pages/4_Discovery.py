@@ -21,6 +21,9 @@ from data.company_search import build_search_options, resolve_company_query, COM
 from style import apply_style
 
 st.set_page_config(page_title="Discovery", page_icon="🔍", layout="wide")
+
+from loader import show_loader
+_loader = show_loader("Loading Discovery…")
 apply_style()
 
 from log_client import log_event
@@ -232,3 +235,5 @@ RULES:
 
 from data.ticker_tape import render_ticker_tape
 render_ticker_tape()
+
+_loader.empty()
