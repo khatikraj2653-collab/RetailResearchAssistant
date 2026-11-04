@@ -405,11 +405,11 @@ footer .footer-text span{color:var(--coral-dk) !important;}
   </div>
 </section>
 
-<section id="tagrail" aria-label="Retail stock price tags">
+<section id="tagrail" aria-label="Price tags for the largest S&amp;P 500 companies">
   <div class="tr-inner">
-    <canvas id="tagrailCv" role="img" aria-label="Hanging price tags for well-known retail stocks. Drag a tag to swing it, click to flip it."></canvas>
-    <div class="tr-fallback"><span>WMT</span><span>COST</span><span>TGT</span><span>HD</span><span>NKE</span><span>AMZN</span><span>LOW</span></div>
-    <div class="tr-cap">Retail <b>shelf</b> · S&amp;P 500</div>
+    <canvas id="tagrailCv" role="img" aria-label="Hanging price tags for the largest S&amp;P 500 companies. Drag a tag to swing it, click to flip it."></canvas>
+    <div class="tr-fallback"><span>NVDA</span><span>AAPL</span><span>MSFT</span><span>GOOGL</span><span>AMZN</span><span>META</span><span>AVGO</span></div>
+    <div class="tr-cap">Largest <b>S&amp;P 500</b> companies</div>
     <div class="tr-hint">Drag · click to flip</div>
   </div>
 </section>
@@ -622,13 +622,13 @@ if(!localStorage.getItem('rra_welcomed')){
 function initTagRail(cv, wrap) {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var TAGS = [
-    {k: 'WMT', n: 'Walmart', s: 'Discount retail', c: '#FF6B4A', ink: '#1A1A1A'},
-    {k: 'COST', n: 'Costco', s: 'Warehouse clubs', c: '#FFD36B', ink: '#1A1A1A'},
-    {k: 'TGT', n: 'Target', s: 'General merchandise', c: '#FFF8EE', ink: '#12372A'},
-    {k: 'HD', n: 'Home Depot', s: 'Home improvement', c: '#12372A', ink: '#FFF8EE'},
-    {k: 'NKE', n: 'Nike', s: 'Apparel & footwear', c: '#FF6B4A', ink: '#1A1A1A'},
-    {k: 'AMZN', n: 'Amazon', s: 'E-commerce', c: '#FFD36B', ink: '#1A1A1A'},
-    {k: 'LOW', n: "Lowe's", s: 'Home improvement', c: '#FFF8EE', ink: '#12372A'}
+    {k: 'NVDA', n: 'Nvidia', s: 'Semiconductors', c: '#FF6B4A', ink: '#1A1A1A'},
+    {k: 'AAPL', n: 'Apple', s: 'Consumer electronics', c: '#FFD36B', ink: '#1A1A1A'},
+    {k: 'MSFT', n: 'Microsoft', s: 'Software and cloud', c: '#FFF8EE', ink: '#12372A'},
+    {k: 'GOOGL', n: 'Alphabet', s: 'Internet and search', c: '#12372A', ink: '#FFF8EE'},
+    {k: 'AMZN', n: 'Amazon', s: 'E-commerce and cloud', c: '#FF6B4A', ink: '#1A1A1A'},
+    {k: 'META', n: 'Meta', s: 'Social and ads', c: '#FFD36B', ink: '#1A1A1A'},
+    {k: 'AVGO', n: 'Broadcom', s: 'Chips and software', c: '#FFF8EE', ink: '#12372A'}
   ];
   var T = window.THREE, renderer;
   if (!T) { wrap.classList.add('nogl'); return; }
@@ -654,7 +654,7 @@ function initTagRail(cv, wrap) {
     x.fillStyle = d.c; x.fillRect(0, 0, 480, 720);
     x.strokeStyle = d.ink; x.globalAlpha = 0.35; x.lineWidth = 3; x.setLineDash([12, 9]); rr(x, 24, 190, 432, 506, 18); x.stroke(); x.setLineDash([]); x.globalAlpha = 1;
     x.fillStyle = d.ink; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
-    x.globalAlpha = 0.7; x.font = font(MONO, 22); x.fillText('S&P 500 · RETAIL', 240, 236); x.globalAlpha = 1;
+    x.globalAlpha = 0.7; x.font = font(MONO, 22); x.fillText('S&P 500 · MEGA-CAP', 240, 236); x.globalAlpha = 1;
     var size = 150; x.font = font(FS, size); while (x.measureText(d.k).width > 380 && size > 60) { size -= 6; x.font = font(FS, size); }
     x.fillText(d.k, 240, 360);
     x.font = "italic 600 40px Fraunces, Georgia, serif"; x.fillText(d.n, 240, 418);
