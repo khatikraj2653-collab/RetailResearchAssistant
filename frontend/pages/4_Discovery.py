@@ -34,6 +34,9 @@ render_nav_bar(active="Discovery")
 st.title("🔍 Discovery")
 st.caption("Browse S&P 500 companies grouped by sector/technology theme.")
 
+from marketmap3d import render_market_map
+render_market_map(height=620)
+
 if "search_options" not in st.session_state:
     st.session_state.search_options = build_search_options()
 if "discovery_chat" not in st.session_state:

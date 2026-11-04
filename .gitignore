@@ -12,3 +12,5 @@ __pycache__/
 *.pyc
 data/_sp500_last_known_good.json
 data/_ticker_last_known_good.json
+
+data/_market_map_last_known_good.json

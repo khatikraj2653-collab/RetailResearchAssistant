@@ -324,6 +324,33 @@ footer .footer-text span{color:var(--coral-dk) !important;}
 .sp-chart-card.hot .sp-glare{opacity:1;}
 @media (hover:none),(prefers-reduced-motion:reduce){.sp-chart-card::before,.sp-chart-card::after{display:none;}.sp-chart-card .sp-chart-top,.sp-chart-card .sp-chart-row,.sp-chart-card .sp-tabs,.sp-chart-card #sp-3d,.sp-chart-card #sp-svg,.sp-chart-card .sp-stats-grid,.sp-glare{transform:none;}}
 </style>
+<style id="mm-css">
+.mm{position:relative;width:100%;font-family:'DM Mono',ui-monospace,Menlo,Consolas,monospace;}
+.mm-bar{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;margin-bottom:12px;}
+.mm-grp{display:flex;flex-wrap:wrap;gap:7px;}
+.mm-btn,.mm-chip{font:500 11.5px/1.2 'DM Mono',ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em;color:#12372A;background:#FFFDF8;border:1.5px solid #12372A;border-radius:6px;padding:6px 12px;cursor:pointer;box-shadow:0 3px 0 #12372A;transition:transform .12s,box-shadow .12s,background .15s;}
+.mm-btn:hover,.mm-chip:hover{transform:translateY(-2px);box-shadow:0 5px 0 #12372A;background:#FFF1D0;}
+.mm-btn:active,.mm-chip:active{transform:translateY(2px);box-shadow:0 1px 0 #12372A;}
+.mm-btn.on,.mm-chip.on{background:#FFD36B;}
+.mm-stage{position:relative;height:520px;}
+.mm canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y;}
+.mm-tip{position:absolute;pointer-events:none;opacity:0;transition:opacity .12s;background:#FFFDF8;border:1.5px dashed #12372A;border-radius:6px 18px 18px 6px;padding:9px 16px 10px;min-width:180px;box-shadow:0 10px 20px -12px rgba(18,55,42,.55);z-index:3;}
+.tp-sym{font:800 19px/1.1 'Fraunces',Georgia,serif;color:#12372A;}
+.tp-name{font-size:11px;color:#6B5E45;margin:2px 0 6px;}
+.tp-price{font-size:15px;color:#1A1A1A;margin-bottom:5px;}
+.tp-row{display:flex;gap:10px;font-size:11px;}
+.tp-row .u{color:#1B7A4E;}.tp-row .d{color:#D9482B;}
+.mm-note{font-size:11px;letter-spacing:.04em;color:#8C7B57;margin-top:10px;line-height:1.6;}
+.mm-msg{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;font-size:13px;color:#6B5E45;padding:20px;background:#FFFDF8;border:1.5px dashed #D6C6A2;border-radius:10px;}
+.mm.nogl .mm-msg,.mm.nodata .mm-msg{display:flex;}
+.mm.nogl canvas,.mm.nodata canvas,.mm.nogl .mm-bar,.mm.nodata .mm-bar{display:none;}
+.mm.nogl .mm-msg:after{content:"3D view isn't supported in this browser.";}
+.mm.nodata .mm-msg:after{content:"Market data isn't available right now. Check back soon.";}
+#marketmap{position:relative;z-index:5;padding:70px 32px 80px;background-color:#FFF8EE;background-image:radial-gradient(rgba(18,55,42,.12) 1.3px,transparent 1.6px);background-size:26px 26px;border-top:1px solid #EADFC9;}
+#marketmap .mm-wrap{max-width:1440px;margin:0 auto;}
+#marketmap .section-sub{margin-bottom:22px;max-width:640px;}
+@media (max-width:600px){#marketmap{padding:40px 12px 50px;}.mm-stage{height:380px;}}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
@@ -343,6 +370,7 @@ footer .footer-text span{color:var(--coral-dk) !important;}
   </div>
   <div class="nav-links">
     <a href="#dashboard-preview" onclick="document.getElementById('dashboard-preview').scrollIntoView({behavior:'smooth'});return false;">Features</a>
+    <a href="#marketmap" onclick="document.getElementById('marketmap').scrollIntoView({behavior:'smooth'});return false;">Market map</a>
     <a href="#howitworks" onclick="document.getElementById('howitworks').scrollIntoView({behavior:'smooth'});return false;">How it works</a>
     <a href="#skills" onclick="document.getElementById('skills').scrollIntoView({behavior:'smooth'});return false;">Skills</a>
   </div>
@@ -396,6 +424,24 @@ footer .footer-text span{color:var(--coral-dk) !important;}
     </div>
   </div>
 </section>
+
+<section id="marketmap" aria-label="3D market map">
+  <div class="mm-wrap">
+    <div class="section-badge">🗺️ Market Map</div>
+    <h2 class="section-title">The market as a shelf of boxes</h2>
+    <p class="section-sub">About 60 large S&amp;P 500 companies grouped by sector. Taller and greener or coral means a bigger move. Drag to rotate, hover a box for its price tag.</p>
+    <div class="mm" id="mm">
+      <div class="mm-bar" id="mmBar"></div>
+      <div class="mm-stage" id="mmStage">
+        <canvas id="mmCv" role="img" aria-label="3D market map of about 60 large S&amp;P 500 companies grouped by sector. Tile height and colour show the price change. Drag to rotate, hover for details."></canvas>
+        <div class="mm-tip" id="mmTip"></div>
+        <div class="mm-msg"></div>
+      </div>
+      <div class="mm-note" id="mmNote"></div>
+    </div>
+  </div>
+</section>
+
 
 <section id="dashboard-preview">
   <div class="dp-inner">
@@ -855,6 +901,198 @@ function init(){
 var done = false;
 function boot() { if (done) return; if (!window.THREE) return; done = true; init(); }
 if (window.THREE) boot(); else { window.addEventListener('load', boot); setTimeout(boot, 3000); }
+})();
+</script>
+<script id="marketmap-js">
+window.__MM_DATA__ = /*__MM_DATA__*/null;
+(function(){
+function initMarketMap(cv, wrap, bar, tip, data) {
+  var T = window.THREE;
+  function fail() { wrap.classList.add('nogl'); }
+  if (!data || !data.rows || !data.rows.length) { wrap.classList.add('nodata'); return; }
+  if (!T) { fail(); return; }
+  var renderer;
+  try { renderer = new T.WebGLRenderer({canvas: cv, antialias: true, alpha: true}); } catch (e) { fail(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  var BW = 10, BH = 6.2, rows = data.rows, PERIODS = [['d1', '1D', 4], ['w1', '1W', 8], ['m1', '1M', 15]];
+  var period = 'd1', sector = null;
+  var NEUTRAL = new T.Color('#EADFC9'), UP = new T.Color('#0E7A43'), DOWN = new T.Color('#F2481F'), DIM = new T.Color('#E4D9C1');
+
+  /* ---- squarified treemap ---- */
+  function layout(items, x, y, w, h) {
+    var tot = items.reduce(function (s, i) { return s + i.v; }, 0), area = w * h;
+    var list = items.map(function (i) { return {it: i, a: i.v / tot * area}; }), out = [], row = [], i = 0;
+    function worst(r, side) { var s = 0, mx = 0, mn = Infinity; r.forEach(function (q) { s += q.a; if (q.a > mx) mx = q.a; if (q.a < mn) mn = q.a; }); return Math.max(side * side * mx / (s * s), s * s / (side * side * mn)); }
+    function place(r) {
+      var s = r.reduce(function (a, q) { return a + q.a; }, 0), k;
+      if (w >= h) { var rw = s / h, cy = y; r.forEach(function (q) { var rh = q.a / rw; out.push({it: q.it, x: x, y: cy, w: rw, h: rh}); cy += rh; }); x += rw; w -= rw; }
+      else { var rh2 = s / w, cx = x; r.forEach(function (q) { var rw2 = q.a / rh2; out.push({it: q.it, x: cx, y: y, w: rw2, h: rh2}); cx += rw2; }); y += rh2; h -= rh2; }
+    }
+    while (i < list.length) {
+      var side = Math.min(w, h), nr = row.concat([list[i]]);
+      if (!row.length || worst(nr, side) <= worst(row, side)) { row = nr; i++; } else { place(row); row = []; }
+    }
+    if (row.length) place(row);
+    return out;
+  }
+  var bySector = {}, order = [];
+  rows.forEach(function (r) { if (!bySector[r.s]) { bySector[r.s] = []; order.push(r.s); } bySector[r.s].push(r); });
+  var sectors = order.map(function (s) { var kids = bySector[s].slice().sort(function (a, b) { return b.w - a.w; }); return {name: s, v: kids.reduce(function (t, k) { return t + k.w; }, 0), kids: kids}; }).sort(function (a, b) { return b.v - a.v; });
+  var sRects = layout(sectors, -BW / 2, -BH / 2, BW, BH), tiles = [];
+  sRects.forEach(function (sr) {
+    var pad = 0.07, kids = layout(sr.it.kids.map(function (k) { return {v: k.w, row: k}; }), sr.x + pad, sr.y + pad, sr.w - 2 * pad, sr.h - 2 * pad);
+    kids.forEach(function (k) { k.it.row.rect = {x: k.x + 0.035, y: k.y + 0.035, w: k.w - 0.07, h: k.h - 0.07}; tiles.push(k.it.row); });
+  });
+
+  /* ---- scene ---- */
+  var scene = new T.Scene(), cam = new T.PerspectiveCamera(30, 2, 0.1, 80);
+  scene.add(new T.AmbientLight(0xffffff, 0.5));
+  var dl = new T.DirectionalLight(0xffffff, 0.62); dl.position.set(-5, 9, 6); scene.add(dl);
+  var group = new T.Group(); scene.add(group);
+  var slab = new T.Mesh(new T.BoxGeometry(BW + 0.5, 0.22, BH + 0.5), new T.MeshStandardMaterial({color: 0xF3E8CF, roughness: 0.95}));
+  slab.position.y = -0.12; group.add(slab);
+  var rim = new T.Mesh(new T.BoxGeometry(BW + 0.62, 0.1, BH + 0.62), new T.MeshStandardMaterial({color: 0xD6C6A2, roughness: 0.95}));
+  rim.position.y = -0.27; group.add(rim);
+  sRects.forEach(function (sr) {
+    var aisle = new T.Mesh(new T.BoxGeometry(sr.w - 0.04, 0.02, sr.h - 0.04), new T.MeshStandardMaterial({color: 0xEADFC9, roughness: 1}));
+    aisle.position.set(sr.x + sr.w / 2, 0.01, sr.y + sr.h / 2); group.add(aisle);
+  });
+
+  var meshes = [], geo = new T.BoxGeometry(1, 1, 1);
+  tiles.forEach(function (r) {
+    var m = new T.Mesh(geo, new T.MeshStandardMaterial({color: NEUTRAL.clone(), roughness: 0.7}));
+    m.position.set(r.rect.x + r.rect.w / 2, 0.02, r.rect.y + r.rect.h / 2);
+    m.scale.set(r.rect.w, 0.05, r.rect.h);
+    m.userData = {row: r, h: 0.05, th: 0.05, col: NEUTRAL.clone(), tcol: NEUTRAL.clone()};
+    r.mesh = m; group.add(m); meshes.push(m);
+  });
+
+  /* ---- labels (big tiles only) ---- */
+  function labelTex(sym, pct, up) {
+    var c = document.createElement('canvas'); c.width = 256; c.height = 128; var g = c.getContext('2d');
+    g.textAlign = 'center'; g.lineJoin = 'round'; g.lineWidth = 9; g.strokeStyle = 'rgba(10,34,25,.85)'; g.fillStyle = '#FFF8EE';
+    g.font = '500 58px "DM Mono", monospace'; g.strokeText(sym, 128, 62); g.fillText(sym, 128, 62);
+    g.font = '500 34px "DM Mono", monospace'; var t = (pct >= 0 ? '+' : '') + pct.toFixed(1) + '%'; g.strokeText(t, 128, 106); g.fillStyle = '#FFD36B'; g.fillText(t, 128, 106);
+    var tx = new T.CanvasTexture(c); tx.anisotropy = 4; return tx;
+  }
+  var labels = [];
+  function buildLabels() {
+    labels.forEach(function (l) { group.remove(l.sp); l.sp.material.map.dispose(); l.sp.material.dispose(); });
+    labels = [];
+    tiles.forEach(function (r) {
+      if (Math.min(r.rect.w, r.rect.h) < 0.62 || r.rect.w * r.rect.h < 0.9) return;
+      var v = r[period]; if (v == null) return;
+      var sp = new T.Sprite(new T.SpriteMaterial({map: labelTex(r.t, v), transparent: true, depthTest: false}));
+      var s = Math.max(0.7, Math.min(1.25, Math.min(r.rect.w, r.rect.h) * 0.95)); sp.scale.set(s, s / 2, 1); sp.renderOrder = 5;
+      group.add(sp); labels.push({sp: sp, r: r, s: s});
+    });
+  }
+
+  /* ---- state -> targets ---- */
+  var cap = 4;
+  function apply() {
+    PERIODS.forEach(function (p) { if (p[0] === period) cap = p[2]; });
+    tiles.forEach(function (r) {
+      var v = r[period], m = r.mesh, off = sector && r.s !== sector;
+      if (v == null) { m.userData.th = 0.05; m.userData.tcol.copy(NEUTRAL); return; }
+      var t = Math.min(Math.abs(v) / cap, 1);
+      m.userData.th = off ? 0.06 : 0.1 + t * 1.55;
+      m.userData.tcol.copy(NEUTRAL).lerp(v >= 0 ? UP : DOWN, 0.4 + 0.6 * t);
+      if (off) m.userData.tcol.lerp(DIM, 0.8);
+    });
+    buildLabels(); need = true;
+  }
+
+  /* ---- toolbar ---- */
+  bar.innerHTML = '';
+  var pg = document.createElement('div'); pg.className = 'mm-grp';
+  PERIODS.forEach(function (p) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'mm-btn' + (p[0] === period ? ' on' : ''); b.textContent = p[1]; b.setAttribute('aria-pressed', p[0] === period);
+    b.onclick = function () { period = p[0]; Array.prototype.forEach.call(pg.children, function (x) { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); }); b.classList.add('on'); b.setAttribute('aria-pressed', 'true'); apply(); };
+    pg.appendChild(b);
+  });
+  bar.appendChild(pg);
+  var sg = document.createElement('div'); sg.className = 'mm-grp mm-sectors';
+  function chip(name) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'mm-chip' + (name === null ? ' on' : ''); b.textContent = name === null ? 'All' : name; b.setAttribute('aria-pressed', name === null);
+    b.onclick = function () { sector = (name === null || sector === name) ? null : name; Array.prototype.forEach.call(sg.children, function (x) { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); }); var on = sector === null ? sg.children[0] : b; on.classList.add('on'); on.setAttribute('aria-pressed', 'true'); apply(); };
+    sg.appendChild(b);
+  }
+  chip(null); sectors.forEach(function (s) { chip(s.name); });
+  bar.appendChild(sg);
+
+  /* ---- sizing ---- */
+  var need = true, visible = true, W = 0, H = 0;
+  function resize() {
+    W = cv.clientWidth; H = cv.clientHeight; if (!W || !H) return;
+    renderer.setSize(W, H, false); cam.aspect = W / H; cam.updateProjectionMatrix();
+    var f = Math.tan(15 * Math.PI / 180), d = Math.max(11.8 / (2 * f * cam.aspect), 12.5), el = 0.68;
+    cam.position.set(0, d * Math.sin(el), d * Math.cos(el)); cam.lookAt(0, -0.2, 0.35); need = true;
+  }
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap); else window.addEventListener('resize', resize);
+  if (window.IntersectionObserver) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) need = true; }).observe(wrap);
+
+  /* ---- pointer: orbit + hover ---- */
+  var ry = -0.28, tRY = -0.28, dragging = false, lastX = 0, moved = 0, idleAt = 0, t0 = performance.now();
+  var ray = new T.Raycaster(), ptr = new T.Vector2(), hover = null, pinned = null;
+  function fmt(v) { return v == null ? 'n/a' : (v >= 0 ? '+' : '') + v.toFixed(2) + '%'; }
+  function showTip(m, x, y) {
+    if (!m) { tip.style.opacity = 0; return; }
+    var r = m.userData.row;
+    tip.innerHTML = '<div class="tp-sym">' + r.t + '</div><div class="tp-name">' + r.n + ' · ' + r.s + '</div><div class="tp-price">$' + (r.p == null ? 'n/a' : r.p.toFixed(2)) + '</div>' +
+      '<div class="tp-row"><span class="' + (r.d1 >= 0 ? 'u' : 'd') + '">1D ' + fmt(r.d1) + '</span><span class="' + (r.w1 >= 0 ? 'u' : 'd') + '">1W ' + fmt(r.w1) + '</span><span class="' + (r.m1 >= 0 ? 'u' : 'd') + '">1M ' + fmt(r.m1) + '</span></div>';
+    var w = wrap.clientWidth, tw = tip.offsetWidth || 190;
+    tip.style.left = Math.max(6, Math.min(w - tw - 6, x + 14)) + 'px'; tip.style.top = Math.max(6, y - 70) + 'px'; tip.style.opacity = 1;
+  }
+  function pick(e) {
+    var rc = cv.getBoundingClientRect(); ptr.x = ((e.clientX - rc.left) / rc.width) * 2 - 1; ptr.y = -((e.clientY - rc.top) / rc.height) * 2 + 1;
+    ray.setFromCamera(ptr, cam); var hit = ray.intersectObjects(meshes, false)[0]; return {m: hit ? hit.object : null, x: e.clientX - rc.left, y: e.clientY - rc.top};
+  }
+  cv.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; moved = 0; try { cv.setPointerCapture(e.pointerId); } catch (x) {} cv.style.cursor = 'grabbing'; });
+  cv.addEventListener('pointermove', function (e) {
+    if (dragging) { var dx = e.clientX - lastX; moved += Math.abs(dx); tRY = Math.max(-0.9, Math.min(0.9, tRY + dx * 0.005)); lastX = e.clientX; need = true; showTip(null); return; }
+    var h = pick(e); hover = h.m; showTip(pinned || h.m, h.x, h.y); cv.style.cursor = h.m ? 'pointer' : 'grab'; need = true;
+  });
+  function up(e) { dragging = false; cv.style.cursor = 'grab'; idleAt = performance.now() + 2500; if (moved < 4) { var h = pick(e); pinned = (h.m && h.m !== pinned) ? h.m : null; showTip(pinned || h.m, h.x, h.y); } }
+  cv.addEventListener('pointerup', up); cv.addEventListener('pointercancel', function () { dragging = false; });
+  cv.addEventListener('pointerleave', function () { hover = null; if (!pinned) showTip(null); need = true; });
+
+  resize(); apply();
+
+  var tmp = new T.Color();
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!visible) return;
+    var i, m, u, moving = false;
+    for (i = 0; i < meshes.length; i++) {
+      m = meshes[i]; u = m.userData;
+      var th = u.th + (m === hover ? 0.12 : 0), dh = th - u.h;
+      if (Math.abs(dh) > 0.002) { u.h += dh * 0.16; moving = true; } else u.h = th;
+      m.scale.y = u.h; m.position.y = u.h / 2 + 0.02;
+      if (Math.abs(u.col.r - u.tcol.r) + Math.abs(u.col.g - u.tcol.g) + Math.abs(u.col.b - u.tcol.b) > 0.004) { u.col.lerp(u.tcol, 0.16); moving = true; } else u.col.copy(u.tcol);
+      m.material.color.copy(u.col); m.material.emissive.setHex(m === hover || m === pinned ? 0x2a2210 : 0x000000);
+    }
+    for (i = 0; i < labels.length; i++) { var l = labels[i]; l.sp.position.set(l.r.mesh.position.x, l.r.mesh.scale.y + 0.38, l.r.mesh.position.z); }
+    if (!reduce && !dragging && now > idleAt) { tRY += (-0.28 + Math.sin((now - t0) / 2600) * 0.2 - tRY) * 0.015; need = true; }
+    var nry = ry + (tRY - ry) * 0.12; if (Math.abs(nry - ry) > 1e-4) need = true; ry = nry;
+    if (moving) need = true;
+    if (need) { group.rotation.y = ry; renderer.render(scene, cam); need = false; }
+  }
+  requestAnimationFrame(frame);
+}
+
+var booted = false;
+function boot(){
+  if (booted) return; booted = true;
+  var d = window.__MM_DATA__, note = document.getElementById('mmNote');
+  note.textContent = d && d.asof ? 'Prices as of ' + d.asof + ' · refreshed every 2 hours · tile size = approximate market-cap weight · height and colour = price change · research only, not financial advice' : '';
+  var go = function(){ initMarketMap(document.getElementById('mmCv'), document.getElementById('mm'), document.getElementById('mmBar'), document.getElementById('mmTip'), d); };
+  if (window.THREE || !d) go(); else window.addEventListener('load', go);
+}
+var fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('800 40px Fraunces'), document.fonts.load("500 30px 'DM Mono'")]).catch(function(){}) : Promise.resolve();
+fonts.then(boot); setTimeout(boot, 2500);
 })();
 </script>
 </body>

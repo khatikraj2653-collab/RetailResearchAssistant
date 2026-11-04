@@ -377,6 +377,12 @@ html_content = html_content.replace("<!--LIVE_TICKER_ITEMS-->", build_landing_ti
 html_content = html_content.replace("<!--SP500_CHART-->", build_sp500_chart_html())
 html_content = html_content.replace("<!--NEWS_ITEMS-->", build_news_html())
 
+try:
+    from data.market_map import get_market_map_json
+    html_content = html_content.replace("/*__MM_DATA__*/null", get_market_map_json())
+except Exception:
+    pass
+
 PAGE_PATHS = [
     "/Dashboard", "/Stock_Research", "/Compare", "/Portfolio", "/Discovery", "/Learning",
 ]
@@ -400,4 +406,4 @@ body { background: #F8FAFC !important; }
 """
 html_content = html_content.replace("<head>", "<head>" + iframe_fixes)
 
-st.components.v1.html(html_content, height=4650, scrolling=True)
+st.components.v1.html(html_content, height=5350, scrolling=True)
