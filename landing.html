@@ -1095,5 +1095,28 @@ var fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.
 fonts.then(boot); setTimeout(boot, 2500);
 })();
 </script>
+<script id="autoheight-js">
+(function(){
+  var fe = null;
+  try { fe = window.frameElement; } catch (e) {}
+  if (!fe) return;
+  var st = document.createElement('style'); st.textContent = 'html{height:auto !important;}body{min-height:0 !important;}'; document.head.appendChild(st);
+  var footer = document.querySelector('footer'), last = 0, raf = 0;
+  function fit(){
+    raf = 0;
+    if (!footer) return;
+    var h = Math.ceil(footer.getBoundingClientRect().bottom + window.scrollY);
+    if (h < 400 || Math.abs(h - last) < 2) return;
+    last = h;
+    try { fe.style.height = h + 'px'; fe.setAttribute('height', h); fe.setAttribute('scrolling', 'no'); fe.style.overflow = 'hidden'; } catch (e) {}
+  }
+  function queue(){ if (!raf) raf = requestAnimationFrame(fit); }
+  fit();
+  window.addEventListener('load', function(){ fit(); setTimeout(fit, 600); setTimeout(fit, 2500); });
+  window.addEventListener('resize', queue);
+  if (window.ResizeObserver) { var ro = new ResizeObserver(queue); var m = document.getElementById('mainsite'); if (m) ro.observe(m); ro.observe(document.body); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+</script>
 </body>
 </html>

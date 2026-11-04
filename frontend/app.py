@@ -406,4 +406,4 @@ body { background: #F8FAFC !important; }
 """
 html_content = html_content.replace("<head>", "<head>" + iframe_fixes)
 
-st.components.v1.html(html_content, height=5350, scrolling=True)
+st.components.v1.html(html_content, height=6300, scrolling=True)
