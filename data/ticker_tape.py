@@ -99,7 +99,7 @@ def get_tape_prices():
     for row in get_tape_data():
         if row["available"]:
             arrow = "▲" if row["up"] else "▼"
-            color = "#0F9D82" if row["up"] else "#DC2626"
+            color = "#1B7A4E" if row["up"] else "#D9482B"
             rows.append(
                 f"<span style='margin-right:28px'>"
                 f"<strong style='color:#374151'>{row['ticker']}</strong> "

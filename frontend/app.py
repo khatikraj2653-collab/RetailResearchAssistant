@@ -217,11 +217,11 @@ def build_sp500_chart_html():
     if not payload.get("available"):
         return '<div class="sp-chart-empty">S&P 500 chart data not yet available.</div>'
 
-    color = "#0D9488"
+    color = "#1B4D3A" if payload["up"] else "#D9482B"
     arrow = "▲" if payload["up"] else "▼"
     sign = "+" if payload["up"] else "-"
-    badge_bg = "#ECFDF5" if payload["up"] else "#FEF2F2"
-    badge_color = "#0B7C68" if payload["up"] else "#B91C1C"
+    badge_bg = "#FFF1D0" if payload["up"] else "#FFE3DA"
+    badge_color = "#12372A" if payload["up"] else "#D9482B"
     data_json = json.dumps(payload["series"]).replace("</script>", "<\\/script>")
 
     tabs_html = "".join(

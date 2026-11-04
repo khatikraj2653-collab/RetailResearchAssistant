@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Retail Research Assistant — S&P 500 Research Platform</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,800;1,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;background:#F8FAFC;height:100%;}
@@ -178,6 +179,133 @@ footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F
 .sk-chip:hover{border-color:#0D9488;color:#0B7C68;transform:translateY(-2px);box-shadow:0 8px 18px -10px rgba(13,148,136,.5);}
 @media (max-width:600px){#skills{padding:40px 16px;}.sk-chips{gap:10px;}.sk-chip{font-size:12px;padding:9px 14px;}}
 </style>
+<style id="boutique-css">
+/* ---------- Price tag boutique: cream, forest, tag-coral, butter. Overrides the teal theme above. ---------- */
+:root{
+  --cream:#FFF8EE; --card:#FFFDF8; --line:#EADFC9; --line2:#D6C6A2; --forest:#12372A; --forest-dk:#0A2219; --forest-lt:#1B4D3A;
+  --coral:#FF6B4A; --coral-dk:#D9482B; --butter:#FFD36B; --butter-soft:#FFF1D0; --ink:#1A1A1A; --mut:#6B5E45; --mut2:#8C7B57;
+  --serif:'Fraunces',Georgia,'Times New Roman',serif; --mono:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+html{background:var(--cream);}
+body{background:var(--cream);color:var(--ink);}
+/* pegboard dots, like a retail display wall */
+#hero,#live-news,#howitworks,#skills{background-image:radial-gradient(rgba(18,55,42,.12) 1.3px,transparent 1.6px);background-size:26px 26px;background-color:var(--cream);}
+#hero{background-image:radial-gradient(ellipse at 50% 15%,rgba(255,211,107,.28),transparent 60%),radial-gradient(rgba(18,55,42,.12) 1.3px,transparent 1.6px);background-size:auto,26px 26px;}
+#dashboard-preview{background:var(--card);border-top:1px solid var(--line);}
+#cta{background:radial-gradient(ellipse at 50% 50%,var(--butter-soft) 0%,var(--cream) 72%);}
+#contact{background:var(--card);border-top:1px solid var(--line);}
+footer{background:var(--card);border-top:1px solid var(--line);}
+.footer-text,.footer-right{color:var(--mut);}
+footer .footer-text{color:var(--forest) !important;}
+footer .footer-text span{color:var(--coral-dk) !important;}
+
+/* nav */
+.nav{background:rgba(255,248,238,.92);border-bottom:1px solid var(--line);}
+.nav-icon{background:var(--forest);box-shadow:0 3px 0 var(--forest-dk);border-radius:8px;}
+.nav-name,.step-title,.prob-title,.feature-title,.contact-title,.news-title,.sp-chart-label{font-family:var(--serif);color:var(--forest);}
+.nav-name{font-weight:800;letter-spacing:-.01em;}
+.nav-links a{color:var(--mut);font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;}
+.nav-links a:hover{color:var(--coral-dk);}
+.nav-cta,.btn-primary,.cta-btn,.feature-btn{background:var(--forest);color:var(--cream);border:none;border-radius:8px;font-family:var(--mono);letter-spacing:.04em;
+  box-shadow:0 4px 0 var(--forest-dk),0 14px 22px -12px rgba(18,55,42,.55);transition:transform .12s,box-shadow .12s,background .15s;}
+.nav-cta:hover,.btn-primary:hover,.cta-btn:hover,.feature-btn:hover{background:var(--coral);color:var(--ink);transform:translateY(-2px);box-shadow:0 6px 0 var(--coral-dk),0 16px 24px -12px rgba(217,72,43,.5);}
+.nav-cta:active,.btn-primary:active,.cta-btn:active,.feature-btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--coral-dk);}
+.btn-secondary{background:var(--card);border:1.5px solid var(--forest);color:var(--forest);border-radius:8px;font-family:var(--mono);box-shadow:0 4px 0 var(--line2);transition:transform .12s,box-shadow .12s;}
+.btn-secondary:hover{border-color:var(--coral-dk);color:var(--coral-dk);transform:translateY(-2px);box-shadow:0 6px 0 var(--line2);}
+.btn-secondary:active{transform:translateY(3px);box-shadow:0 1px 0 var(--line2);}
+
+/* shelf-label ticker */
+.ticker{background:var(--card);border-bottom:1px solid var(--line);}
+.ti{border-right:1px dashed var(--line2);}
+.tsym{font-family:var(--mono);color:var(--forest);}
+.tprice{font-family:var(--mono);color:var(--ink);}
+.tchg{font-family:var(--mono);}
+
+/* tag-style badges */
+.badge,.section-badge{background:var(--butter);border:1.5px dashed var(--forest);color:var(--forest);border-radius:6px 20px 20px 6px;font-family:var(--mono);font-weight:500;letter-spacing:.06em;text-transform:uppercase;}
+.bdot{background:var(--coral);box-shadow:none;}
+.hero-title,.section-title,.cta-title{font-family:var(--serif);color:var(--forest);font-weight:800;}
+.hero-title{letter-spacing:-.02em;text-shadow:1px 1px 0 #EADFC9,2px 2px 0 #E0D2B4,3px 3px 0 #D6C6A2;}
+.hero-title em,.cta-title em{font-style:normal;background:none;-webkit-text-fill-color:var(--coral-dk);color:var(--coral-dk);}
+.hero-desc,.section-sub,.cta-sub{color:var(--mut);}
+.hero-desc strong,.step-desc strong{color:var(--forest);}
+.chip,.feature-tag,.news-ticker-badge{background:var(--butter-soft);border:1px solid #EAD9AE;color:var(--forest);font-family:var(--mono);font-weight:500;border-radius:4px;box-shadow:0 2px 0 #EAD9AE;}
+.feature-tag{border-radius:999px;}
+.stats{border-top:2px solid var(--forest);}
+.stat-num{font-family:var(--mono);color:var(--coral-dk);font-weight:500;}
+.stat-lbl{font-family:var(--mono);color:var(--mut2);letter-spacing:.08em;}
+
+/* hero chart card: stacked-sheet depth */
+.sp-chart-card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 1px 0 #D6C6A2,0 2px 0 #FFFDF8,0 3px 0 #D6C6A2,0 4px 0 #FFF8EE,0 5px 0 #D6C6A2,0 30px 44px -26px rgba(18,55,42,.5);}
+.sp-chart-sublabel,.sp-chart-sub,.sp-stat-label{color:var(--mut2);}
+.sp-chart-value{font-family:var(--mono);color:var(--ink);font-weight:500;}
+.sp-tab{font-family:var(--mono);color:var(--mut);}
+.sp-tab:hover{color:var(--coral-dk);}
+.sp-tab.active{color:var(--forest);border-bottom-color:var(--coral);}
+.sp-tabs,.sp-stats-grid{border-color:var(--line);}
+.sp-stat-value{color:var(--ink);font-family:var(--mono);}
+.sp-chart-empty{background:var(--card);border-color:var(--line2);color:var(--mut2);}
+
+/* cards: tags with a punched hole, receipts for news */
+.stat-card{background:var(--butter-soft);border:1px solid #EAD9AE;border-radius:14px;box-shadow:0 3px 0 #EAD9AE;position:relative;}
+.stat-card-label{color:var(--mut);font-family:var(--mono);font-size:.72rem;letter-spacing:.05em;text-transform:uppercase;}
+.stat-card-num{font-family:var(--serif);color:var(--forest);}
+.stat-card-sub{color:var(--coral-dk);font-family:var(--mono);}
+.feature-card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:14px;
+  box-shadow:0 1px 0 #D6C6A2,0 2px 0 #FFFDF8,0 3px 0 #D6C6A2,0 22px 34px -24px rgba(18,55,42,.45);}
+.feature-card:hover{border-color:var(--forest);box-shadow:0 1px 0 #D6C6A2,0 2px 0 #FFFDF8,0 3px 0 #D6C6A2,0 30px 40px -24px rgba(18,55,42,.55);transform:translateY(-3px);}
+.feature-card::before,.stat-card::before{content:'';position:absolute;top:14px;right:16px;width:11px;height:11px;border-radius:50%;background:var(--cream);border:1.5px solid var(--line2);box-shadow:inset 0 1.5px 2px rgba(0,0,0,.22);}
+.feature-desc,.step-desc,.prob-sub,.prob-body,.news-meta,.contact-sub{color:var(--mut);}
+.dp-note{background:var(--butter-soft);border:1px dashed var(--forest);color:var(--forest);border-radius:10px;font-family:var(--mono);font-size:.78rem;}
+.news-card{background:var(--card);border:1.5px dashed var(--line2);border-radius:6px;box-shadow:0 3px 0 var(--line);}
+.news-card:hover{border-color:var(--forest);box-shadow:0 6px 0 var(--line);transform:translateY(-2px);}
+.news-publisher{color:var(--forest);font-family:var(--mono);}
+.news-readmore{color:var(--coral-dk);font-family:var(--mono);}
+.news-empty{background:var(--card);border-color:var(--line2);color:var(--mut2);}
+
+/* how it works */
+.step-num{background:var(--coral);color:var(--ink);font-family:var(--mono);box-shadow:0 3px 0 var(--coral-dk);border-radius:50%;}
+.hiw-problems{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 1px 0 #D6C6A2,0 2px 0 #FFFDF8,0 3px 0 #D6C6A2,0 22px 34px -24px rgba(18,55,42,.45);}
+.prob-item{border-bottom:1px dashed var(--line2);}
+.prob-head{color:var(--forest);font-family:var(--mono);}
+
+/* skills: extruded keys */
+#skills{border-top:1px solid var(--line);}
+.sk-chip{font-family:var(--mono);color:var(--forest);background:var(--card);border:1.5px solid var(--forest);border-radius:6px;box-shadow:0 3px 0 var(--forest);transition:transform .12s,box-shadow .12s,background .15s;}
+.sk-chip:hover{background:var(--butter);color:var(--ink);border-color:var(--forest);transform:translateY(-2px);box-shadow:0 5px 0 var(--forest);}
+.sk-chip:active{transform:translateY(2px);box-shadow:0 1px 0 var(--forest);}
+
+/* contact */
+.contact-grid{background:var(--line2);border:1px solid var(--line2);border-radius:6px;overflow:hidden;}
+.contact-grid a{background:var(--card);}
+.contact-grid a:hover{background:var(--butter-soft);}
+.contact-label{font-family:var(--mono);color:var(--mut2);}
+.contact-value{color:var(--forest);}
+#welcomeModal button{background:var(--forest) !important;color:var(--cream) !important;box-shadow:0 4px 0 var(--forest-dk) !important;border-radius:8px !important;}
+
+/* 3D tag rail */
+#tagrail{position:relative;z-index:5;padding:0 24px;background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+#tagrail .tr-inner{max-width:1440px;margin:0 auto;position:relative;height:300px;}
+#tagrail canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:pan-y;}
+#tagrail canvas:active{cursor:grabbing;}
+#tagrail .tr-cap{position:absolute;left:0;bottom:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut2);pointer-events:none;}
+#tagrail .tr-cap b{color:var(--coral-dk);font-weight:500;}
+#tagrail .tr-hint{position:absolute;right:0;bottom:8px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mut2);pointer-events:none;}
+#tagrail .tr-fallback{display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-wrap:wrap;gap:10px;padding:10px;}
+#tagrail .tr-fallback span{background:var(--butter);border:1.5px dashed var(--forest);border-radius:6px 16px 16px 6px;padding:8px 16px;font-family:var(--mono);font-size:13px;color:var(--forest);}
+#tagrail.nogl canvas,#tagrail.nogl .tr-hint{display:none;}
+#tagrail.nogl .tr-fallback{display:flex;}
+
+/* pointer tilt on cards */
+.tilt{transform-style:preserve-3d;transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));transition:transform .5s cubic-bezier(.2,.8,.2,1);will-change:transform;}
+.tilt.hot{transition:transform .08s linear;}
+.tilt:hover{transform:perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));}
+@media (max-width:600px){#tagrail{padding:0 8px;}#tagrail .tr-inner{height:240px;}#tagrail .tr-cap{display:none;}}
+@media (hover:none){.tilt{transform:none !important;}}
+@media (prefers-reduced-motion:reduce){.tilt{transform:none !important;transition:none;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
 <div id="welcomeModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.4);z-index:500;align-items:center;justify-content:center;">
@@ -230,6 +358,15 @@ footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F
   </div>
 </section>
 
+<section id="tagrail" aria-label="Retail stock price tags">
+  <div class="tr-inner">
+    <canvas id="tagrailCv" role="img" aria-label="Hanging price tags for well-known retail stocks. Drag a tag to swing it, click to flip it."></canvas>
+    <div class="tr-fallback"><span>WMT</span><span>COST</span><span>TGT</span><span>HD</span><span>NKE</span><span>AMZN</span><span>LOW</span></div>
+    <div class="tr-cap">Retail <b>shelf</b> · S&amp;P 500</div>
+    <div class="tr-hint">Drag · click to flip</div>
+  </div>
+</section>
+
 <section id="live-news">
   <div style="max-width:1440px;margin:0 auto;padding:0 32px;">
     <div class="section-badge">📰 Live Market News</div>
@@ -265,31 +402,31 @@ footer{position:relative;z-index:5;padding:28px 48px;border-top:1px solid #E2E8F
     </div>
 
     <div class="feature-grid">
-      <div class="feature-card">
+      <div class="feature-card tilt">
         <div class="feature-head"><span class="feature-icon">🔎</span><span class="feature-title">Stock Research</span></div>
         <div class="feature-desc">Get a plain-English profile for any S&P 500 company — overview, valuation, and recent news.</div>
         <div class="feature-tags"><span class="feature-tag">Company profiles</span><span class="feature-tag">Valuation</span><span class="feature-tag">News</span></div>
         <button class="feature-btn" onclick="goApp(1)">Open Stock Research →</button>
       </div>
-      <div class="feature-card">
+      <div class="feature-card tilt">
         <div class="feature-head"><span class="feature-icon">⚖️</span><span class="feature-title">Compare</span></div>
         <div class="feature-desc">Put up to 5 stocks side by side with a factual delta summary — no winner declared.</div>
         <div class="feature-tags"><span class="feature-tag">Side-by-side</span><span class="feature-tag">Valuation</span><span class="feature-tag">Growth</span></div>
         <button class="feature-btn" onclick="goApp(2)">Open Compare →</button>
       </div>
-      <div class="feature-card">
+      <div class="feature-card tilt">
         <div class="feature-head"><span class="feature-icon">📈</span><span class="feature-title">Portfolio Analysis</span></div>
         <div class="feature-desc">Upload or enter your holdings to see concentration, sector, and correlation risk flags.</div>
         <div class="feature-tags"><span class="feature-tag">Concentration</span><span class="feature-tag">Correlation</span><span class="feature-tag">Multi-format</span></div>
         <button class="feature-btn" onclick="goApp(3)">Open Portfolio Analysis →</button>
       </div>
-      <div class="feature-card">
+      <div class="feature-card tilt">
         <div class="feature-head"><span class="feature-icon">🔍</span><span class="feature-title">Discovery</span></div>
         <div class="feature-desc">Browse the S&P 500 by sector/technology theme — AI, semiconductors, biotech, and more.</div>
         <div class="feature-tags"><span class="feature-tag">18 themes</span><span class="feature-tag">503 companies</span></div>
         <button class="feature-btn" onclick="goApp(4)">Open Discovery →</button>
       </div>
-      <div class="feature-card">
+      <div class="feature-card tilt">
         <div class="feature-head"><span class="feature-icon">📚</span><span class="feature-title">Learning</span></div>
         <div class="feature-desc">Five original chapters on stock market fundamentals, downloadable, with a chapter-scoped Q&A assistant.</div>
         <div class="feature-tags"><span class="feature-tag">5 chapters</span><span class="feature-tag">Downloadable</span></div>
@@ -413,6 +550,187 @@ function closeWelcomeModal(){
 if(!localStorage.getItem('rra_welcomed')){
   document.getElementById('welcomeModal').style.display='flex';
 }
+</script>
+<script>
+(function(){
+/* Hanging price-tag rail: pendulum tags on a rail. Drag a tag to swing it, move the pointer through them to set them swaying, click to flip. */
+function initTagRail(cv, wrap) {
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var TAGS = [
+    {k: 'WMT', n: 'Walmart', s: 'Discount retail', c: '#FF6B4A', ink: '#1A1A1A'},
+    {k: 'COST', n: 'Costco', s: 'Warehouse clubs', c: '#FFD36B', ink: '#1A1A1A'},
+    {k: 'TGT', n: 'Target', s: 'General merchandise', c: '#FFF8EE', ink: '#12372A'},
+    {k: 'HD', n: 'Home Depot', s: 'Home improvement', c: '#12372A', ink: '#FFF8EE'},
+    {k: 'NKE', n: 'Nike', s: 'Apparel & footwear', c: '#FF6B4A', ink: '#1A1A1A'},
+    {k: 'AMZN', n: 'Amazon', s: 'E-commerce', c: '#FFD36B', ink: '#1A1A1A'},
+    {k: 'LOW', n: "Lowe's", s: 'Home improvement', c: '#FFF8EE', ink: '#12372A'}
+  ];
+  var T = window.THREE, renderer;
+  if (!T) { wrap.classList.add('nogl'); return; }
+  try { renderer = new T.WebGLRenderer({canvas: cv, antialias: true, alpha: true}); } catch (e) { wrap.classList.add('nogl'); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = T.sRGBEncoding;
+  var scene = new T.Scene(), camera = new T.PerspectiveCamera(30, 1, 0.1, 100);
+  scene.add(new T.HemisphereLight(0xffffff, 0xd9c9a6, 0.95));
+  var key = new T.DirectionalLight(0xffffff, 0.7); key.position.set(-3, 5, 7); scene.add(key);
+  var maxAniso = renderer.capabilities.getMaxAnisotropy();
+
+  function mk(w, h) { var c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+  function tex(c) { var t = new T.CanvasTexture(c); t.encoding = T.sRGBEncoding; t.anisotropy = maxAniso; t.repeat.set(1 / 1.2, 1 / 1.8); t.offset.set(0.5, 0.5); t.wrapS = t.wrapT = T.ClampToEdgeWrapping; return t; }
+  function rr(x, a, b, w, h, r) { x.beginPath(); x.moveTo(a + r, b); x.lineTo(a + w - r, b); x.quadraticCurveTo(a + w, b, a + w, b + r); x.lineTo(a + w, b + h - r); x.quadraticCurveTo(a + w, b + h, a + w - r, b + h); x.lineTo(a + r, b + h); x.quadraticCurveTo(a, b + h, a, b + h - r); x.lineTo(a, b + r); x.quadraticCurveTo(a, b, a + r, b); x.closePath(); }
+  function barcode(x, ink, seed, a, b, w, h) {
+    var s = seed * 9301 + 49297, px = a; x.fillStyle = ink;
+    while (px < a + w - 6) { s = (s * 9301 + 49297) % 233280; var bw = 3 + Math.floor((s / 233280) * 8), gap = 3 + Math.floor(((s * 7) % 233280) / 233280 * 6); x.fillRect(px, b, bw, h); px += bw + gap; }
+  }
+  var FS = "800 {S}px Fraunces, Georgia, serif", MONO = "600 {S}px 'DM Mono', Menlo, monospace";
+  function font(t, s) { return t.replace('{S}', s); }
+  function frontTex(i) {
+    var d = TAGS[i], c = mk(480, 720), x = c.getContext('2d');
+    x.fillStyle = d.c; x.fillRect(0, 0, 480, 720);
+    x.strokeStyle = d.ink; x.globalAlpha = 0.35; x.lineWidth = 3; x.setLineDash([12, 9]); rr(x, 24, 190, 432, 506, 18); x.stroke(); x.setLineDash([]); x.globalAlpha = 1;
+    x.fillStyle = d.ink; x.textAlign = 'center'; x.textBaseline = 'alphabetic';
+    x.globalAlpha = 0.7; x.font = font(MONO, 22); x.fillText('S&P 500 · RETAIL', 240, 236); x.globalAlpha = 1;
+    var size = 150; x.font = font(FS, size); while (x.measureText(d.k).width > 380 && size > 60) { size -= 6; x.font = font(FS, size); }
+    x.fillText(d.k, 240, 360);
+    x.font = "italic 600 40px Fraunces, Georgia, serif"; x.fillText(d.n, 240, 418);
+    x.font = font(MONO, 22); var sw = x.measureText(d.s).width + 36; x.globalAlpha = 0.85; x.lineWidth = 2.5; x.strokeStyle = d.ink; rr(x, 240 - sw / 2, 440, sw, 40, 20); x.stroke(); x.globalAlpha = 1; x.fillText(d.s, 240, 468);
+    x.fillStyle = d.ink; rr(x, 70, 508, 340, 66, 12); x.fill();
+    x.fillStyle = d.c; x.font = font(MONO, 30); x.fillText('RESEARCH →', 240, 552);
+    barcode(x, d.ink, i + 3, 76, 604, 328, 62);
+    return tex(c);
+  }
+  function backTex(i) {
+    var d = TAGS[i], c = mk(480, 720), x = c.getContext('2d');
+    x.fillStyle = '#FFF8EE'; x.fillRect(0, 0, 480, 720);
+    x.strokeStyle = '#12372A'; x.globalAlpha = 0.3; x.lineWidth = 3; x.setLineDash([12, 9]); rr(x, 24, 190, 432, 506, 18); x.stroke(); x.setLineDash([]); x.globalAlpha = 1;
+    x.fillStyle = '#12372A'; x.textAlign = 'left'; x.font = font(MONO, 24); x.fillText('WHAT YOU GET', 56, 246);
+    x.fillRect(56, 262, 368, 3);
+    var rows = ['Plain-English profile', 'Side-by-side compare', 'Portfolio risk flags', 'Theme discovery', 'Learn the basics'];
+    rows.forEach(function (r, k) { var y = 322 + k * 62; x.fillStyle = '#FF6B4A'; x.beginPath(); x.arc(70, y - 10, 11, 0, 7); x.fill(); x.fillStyle = '#FFF8EE'; x.font = "700 18px 'DM Mono', monospace"; x.textAlign = 'center'; x.fillText('✓', 70, y - 4); x.textAlign = 'left'; x.fillStyle = '#1A1A1A'; x.font = "600 29px Fraunces, Georgia, serif"; x.fillText(r, 96, y); });
+    barcode(x, '#12372A', i + 11, 56, 628, 368, 38);
+    x.fillStyle = '#6B5E45'; x.font = font(MONO, 15); x.textAlign = 'center'; x.fillText('ILLUSTRATIVE · RESEARCH, NOT ADVICE', 240, 692);
+    return tex(c);
+  }
+
+  /* tag shape: chamfered top, punched hole */
+  var shape = new T.Shape();
+  shape.moveTo(-0.6, -0.9); shape.lineTo(0.6, -0.9); shape.lineTo(0.6, 0.5); shape.lineTo(0.3, 0.9); shape.lineTo(-0.3, 0.9); shape.lineTo(-0.6, 0.5); shape.lineTo(-0.6, -0.9);
+  var hole = new T.Path(); hole.absarc(0, 0.62, 0.09, 0, Math.PI * 2, true); shape.holes.push(hole);
+  var bodyGeo = new T.ExtrudeGeometry(shape, {depth: 0.07, bevelEnabled: true, bevelThickness: 0.02, bevelSize: 0.02, bevelSegments: 2, steps: 1});
+  bodyGeo.translate(0, -0.62, -0.035);
+  var faceGeo = new T.ShapeGeometry(shape); faceGeo.translate(0, -0.62, 0);
+  var DEPTH = 0.035 + 0.02 + 0.004;
+
+  var stageG = new T.Group(); scene.add(stageG);
+  var RAILY = 2.2;
+  var twine = new T.MeshStandardMaterial({color: 0x8A6D3B, roughness: 0.9});
+  var railMat = new T.MeshStandardMaterial({color: 0x12372A, metalness: 0.4, roughness: 0.4});
+  var rail = new T.Mesh(new T.CylinderGeometry(0.06, 0.06, 1, 20), railMat); rail.rotation.z = Math.PI / 2; rail.position.y = RAILY; stageG.add(rail);
+  var capL = new T.Mesh(new T.SphereGeometry(0.11, 18, 14), railMat), capR = capL.clone(); stageG.add(capL); stageG.add(capR);
+
+  var tags = [], bodies = [];
+  TAGS.forEach(function (d, i) {
+    var L = 0.95 + (i % 3) * 0.32 + (i === 3 ? 0.05 : 0);
+    var pivot = new T.Group(); pivot.position.y = RAILY; stageG.add(pivot);
+    var str = new T.Mesh(new T.CylinderGeometry(0.013, 0.013, L, 6), twine); str.position.y = -L / 2; pivot.add(str);
+    var flip = new T.Group(); flip.position.y = -L; pivot.add(flip);
+    var body = new T.Mesh(bodyGeo, new T.MeshStandardMaterial({color: new T.Color(d.c), roughness: 0.65})); body.userData.i = i; flip.add(body); bodies.push(body);
+    var fr = new T.Mesh(faceGeo, new T.MeshBasicMaterial({map: frontTex(i)})); fr.position.z = DEPTH; flip.add(fr);
+    var bk = new T.Mesh(faceGeo, new T.MeshBasicMaterial({map: backTex(i)})); bk.rotation.y = Math.PI; bk.position.z = -DEPTH; flip.add(bk);
+    var eye = new T.Mesh(new T.TorusGeometry(0.105, 0.022, 10, 28), new T.MeshStandardMaterial({color: 0xB8893A, metalness: 0.7, roughness: 0.35})); flip.add(eye);
+    tags.push({pivot: pivot, flip: flip, L: L, th: (i % 2 ? 1 : -1) * 0.18, om: 0, yaw: 0, yawT: 0, timer: 3 + i * 1.3, x: 0});
+  });
+
+  var spacing = 1.6;
+  function layout() {
+    var n = tags.length, x0 = -spacing * (n - 1) / 2;
+    tags.forEach(function (t, i) { t.x = x0 + i * spacing; t.pivot.position.x = t.x; });
+    var w = spacing * (n - 1) + 1.6; rail.scale.y = w; capL.position.set(-w / 2, RAILY, 0); capR.position.set(w / 2, RAILY, 0);
+  }
+  function resize() {
+    var w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+    renderer.setSize(w, h, false); camera.aspect = w / h;
+    var H = 4.15, d = H / (2 * Math.tan(15 * Math.PI / 180));
+    d = Math.max(d, 6.4 / (2 * Math.tan(15 * Math.PI / 180) * camera.aspect));       // keep the whole rail in view on narrow screens
+    camera.position.set(0, 0.35, d); camera.lookAt(0, 0.35, 0); camera.updateProjectionMatrix();
+    var visW = 2 * Math.tan(15 * Math.PI / 180) * d * camera.aspect;
+    spacing = Math.max(1.0, Math.min(2.3, (visW - 1.8) / (tags.length - 1)));
+    layout();
+  }
+  resize();
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(wrap); else window.addEventListener('resize', resize);
+
+  /* pointer: world position on the z=0 plane, hover impulse, drag + click-to-flip */
+  var ray = new T.Raycaster(), ndc = new T.Vector2(), plane = new T.Plane(new T.Vector3(0, 0, 1), 0), hit = new T.Vector3();
+  function world(e) {
+    var r = cv.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera); ray.ray.intersectPlane(plane, hit); return hit;
+  }
+  var grab = -1, moved = 0, lastX = 0, lastTh = 0, lastT = 0, dragVel = 0, hoverLast = null;
+  cv.addEventListener('pointerdown', function (e) {
+    var w = world(e); ray.setFromCamera(ndc, camera); var hs = ray.intersectObjects(bodies, false);
+    if (hs.length) { grab = hs[0].object.userData.i; moved = 0; lastX = e.clientX; lastT = performance.now(); try { cv.setPointerCapture(e.pointerId); } catch (x) {} }
+  });
+  cv.addEventListener('pointermove', function (e) {
+    var w = world(e), px = w.x, py = w.y;
+    if (grab >= 0) {
+      var t = tags[grab], th = Math.atan2(px - t.x, RAILY - py); th = Math.max(-1.2, Math.min(1.2, th));
+      moved += Math.abs(e.clientX - lastX); lastX = e.clientX;
+      var now = performance.now(); dragVel = (th - t.th) / Math.max(0.016, (now - lastT) / 1000); lastT = now; t.th = th; t.om = 0;
+    } else if (!reduce && e.pointerType !== 'touch') {
+      if (hoverLast !== null) {
+        var dx = px - hoverLast;
+        tags.forEach(function (t) { if (Math.abs(px - t.x) < 0.8 && py < RAILY - 0.2 && py > RAILY - t.L - 1.7) t.om += Math.max(-3, Math.min(3, dx * 1.7)); });
+      }
+      hoverLast = px;
+    }
+  });
+  function release() { if (grab >= 0) { var t = tags[grab]; if (moved < 6) { t.yawT += Math.PI; t.om += 1.4; } else t.om = Math.max(-6, Math.min(6, dragVel)); } grab = -1; }
+  cv.addEventListener('pointerup', release); cv.addEventListener('pointercancel', function () { grab = -1; });
+  cv.addEventListener('pointerleave', function () { hoverLast = null; });
+
+  var clock = new T.Clock(), t = 0, visible = true;
+  if (window.IntersectionObserver) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(wrap);
+  function frame() {
+    requestAnimationFrame(frame);
+    if (!visible || document.hidden) return;
+    var dt = Math.min(clock.getDelta(), 0.04); if (!reduce) t += dt;
+    if (!reduce) tags.forEach(function (g, i) {
+      if (grab === i) return;
+      var left = tags[i - 1] ? tags[i - 1].th : g.th, right = tags[i + 1] ? tags[i + 1].th : g.th;
+      var acc = -(9 / g.L) * Math.sin(g.th) - 0.55 * g.om + 1.1 * (left + right - 2 * g.th) + 0.45 * Math.sin(t * 0.9 + i * 0.8);
+      g.om += acc * dt; g.th += g.om * dt;
+      g.timer -= dt; if (g.timer <= 0) { g.yawT += Math.PI; g.timer = 7 + Math.random() * 5; }
+      g.yaw += (g.yawT - g.yaw) * Math.min(1, dt * 6);
+    });
+    tags.forEach(function (g) { g.pivot.rotation.z = g.th; g.flip.rotation.y = g.yaw; g.flip.rotation.x = g.om * 0.04; g.flip.rotation.z = -g.th * 0.35; });
+    renderer.render(scene, camera);
+    cv.dataset.ready = '1';
+  }
+  frame();
+}
+
+var booted = false;
+function boot(){
+  if (booted) return; booted = true;
+  var sec = document.getElementById('tagrail'), cv = document.getElementById('tagrailCv');
+  var go = function(){ initTagRail(cv, sec); };
+  if (window.THREE) go(); else window.addEventListener('load', go);
+}
+var fonts = document.fonts && document.fonts.load ? Promise.all([document.fonts.load('800 60px Fraunces'), document.fonts.load("600 22px 'DM Mono'"), document.fonts.load('italic 600 40px Fraunces')]).catch(function(){}) : Promise.resolve();
+fonts.then(boot); setTimeout(boot, 2500);
+
+// pointer tilt on feature cards (fine pointers only)
+if (window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches && !matchMedia('(prefers-reduced-motion:reduce)').matches) {
+  document.querySelectorAll('.tilt').forEach(function(el){
+    el.addEventListener('pointermove', function(e){
+      var r = el.getBoundingClientRect(), px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+      el.classList.add('hot'); el.style.setProperty('--ry', (px * 7).toFixed(2) + 'deg'); el.style.setProperty('--rx', (-py * 7).toFixed(2) + 'deg');
+    });
+    el.addEventListener('pointerleave', function(){ el.classList.remove('hot'); el.style.setProperty('--rx', '0deg'); el.style.setProperty('--ry', '0deg'); });
+  });
+}
+})();
 </script>
 </body>
 </html>

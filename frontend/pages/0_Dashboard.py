@@ -23,6 +23,9 @@ render_nav_bar(active="Dashboard")
 st.title("📊 Retail Research Assistant")
 st.caption("S&P 500 research tools — built for research, not prediction.")
 
+from tagrail3d import render_tag_rail
+render_tag_rail(height=300)
+
 st.write("")
 
 col1, col2, col3 = st.columns(3)
