@@ -55,10 +55,30 @@ if past_sessions:
 selected = st.selectbox(
     "Search by company name or ticker",
     options=["Type to search..."] + st.session_state.search_options,
+    key="_srch_sel",
 )
 
-if st.button("Research", type="primary") and selected != "Type to search...":
-    ticker = extract_ticker_from_option(selected)
+# "Try sample" quick-start chips
+st.markdown(
+    "<div style='font-size:11px;color:#8a8070;letter-spacing:.06em;"
+    "text-transform:uppercase;margin:6px 0 4px;'>Or try a sample</div>",
+    unsafe_allow_html=True,
+)
+_samples = ["AAPL", "NVDA", "MSFT", "GOOGL"]
+_cols = st.columns(len(_samples))
+_sample_clicked = None
+for _i, _tk in enumerate(_samples):
+    with _cols[_i]:
+        if st.button(_tk, key=f"_rr_sample_{_tk}", use_container_width=True):
+            _sample_clicked = _tk
+
+_research_now = st.button("Research", type="primary")
+
+if (_research_now and selected != "Type to search...") or _sample_clicked:
+    if _sample_clicked:
+        ticker = _sample_clicked
+    else:
+        ticker = extract_ticker_from_option(selected)
     with st.spinner(f"Pulling factor data for {ticker}..."):
         try:
             result = run_deep_research(ticker)
