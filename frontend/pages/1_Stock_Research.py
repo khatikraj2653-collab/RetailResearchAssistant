@@ -19,6 +19,8 @@ from data.history_store import save_history, load_history
 st.set_page_config(page_title="Stock Research", page_icon="🔎", layout="wide")
 
 from loader import show_loader
+from keyboard import bind_ctrl_enter_submit
+bind_ctrl_enter_submit()
 _loader = show_loader("Loading Stock Research…")
 
 apply_style()

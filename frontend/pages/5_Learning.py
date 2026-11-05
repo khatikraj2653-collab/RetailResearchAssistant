@@ -18,6 +18,8 @@ from style import apply_style
 st.set_page_config(page_title="Learning", page_icon="📚", layout="wide")
 
 from loader import show_loader
+from keyboard import bind_ctrl_enter_submit
+bind_ctrl_enter_submit()
 _loader = show_loader("Loading Learning…")
 apply_style()
 

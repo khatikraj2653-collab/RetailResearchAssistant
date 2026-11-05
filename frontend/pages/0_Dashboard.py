@@ -12,6 +12,8 @@ from components import gradient_stat_card
 st.set_page_config(page_title="Retail Research Assistant", page_icon="📊", layout="wide")
 
 from loader import show_loader
+from keyboard import bind_ctrl_enter_submit
+bind_ctrl_enter_submit()
 _loader = show_loader("Loading Dashboard…")
 
 apply_style()

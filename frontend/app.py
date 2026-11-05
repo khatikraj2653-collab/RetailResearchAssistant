@@ -7,6 +7,9 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent))
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
+from keyboard import bind_ctrl_enter_submit
+bind_ctrl_enter_submit()
+
 st.set_page_config(
     page_title="Retail Research Assistant",
     page_icon="📊",
