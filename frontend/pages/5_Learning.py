@@ -120,7 +120,7 @@ if st.button("Ask", key="learning_ask_btn") and followup_q:
         f"--- Chapter {c['number']}: {c['title']} ---\n{c['content']}" for c in CHAPTERS
     )
 
-    chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+    chat_llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none")
 
     system_prompt = f"""You are the Retail Research Assistant's Learning
 chat, created by Raj Tejpal Khatik. Your ONLY job is to answer questions

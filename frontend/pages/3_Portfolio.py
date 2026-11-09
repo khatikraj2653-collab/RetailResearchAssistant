@@ -1,4 +1,5 @@
 import sys
+import uuid
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -35,7 +36,7 @@ render_nav_bar(active="Portfolio")
 st.title("📈 Portfolio Analysis")
 st.caption("Structural risk analysis only — no price prediction, no buy/sell advice.")
 
-USER_KEY = "default_user"  # single-user app; placeholder for future multi-user support
+USER_KEY = st.session_state.setdefault("history_user_key", uuid.uuid4().hex)
 
 if "search_options" not in st.session_state:
     st.session_state.search_options = build_search_options()
@@ -291,7 +292,7 @@ if st.session_state.portfolio_result:
                 f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none").bind_tools([lookup_company])
 
         holdings_summary = ", ".join(f"{h['ticker']} ({h['shares']} shares)" for h in holdings)
         diff_summary = "No previous portfolio saved to compare against." if not diff else str(diff)

@@ -1,4 +1,5 @@
 import sys
+import threading
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parents[2]))
@@ -47,6 +48,12 @@ if "search_options" not in st.session_state:
 if "discovery_chat" not in st.session_state:
     st.session_state.discovery_chat = []
 
+
+@st.cache_resource(show_spinner=False)
+def _classification_build_lock():
+    return threading.Lock()
+
+
 classification = get_classification()
 
 if not classification:
@@ -56,23 +63,27 @@ if not classification:
         "it's cached for 30 days."
     )
     if st.button("Build Classification Now", type="primary"):
-        progress_bar = st.progress(0, text="Starting classification...")
+        build_lock = _classification_build_lock()
+        if not build_lock.acquire(blocking=False):
+            st.info("A classification build is already running. Refresh this page in a few minutes.")
+        else:
+            try:
+                # another visitor's build may have finished since this page loaded
+                if not get_classification():
+                    progress_bar = st.progress(0, text="Starting classification...")
 
-        def update_progress(current, total):
-            progress_bar.progress(
-                current / total, text=f"Classifying batch {current}/{total}..."
-            )
+                    def update_progress(current, total):
+                        progress_bar.progress(
+                            current / total, text=f"Classifying batch {current}/{total}..."
+                        )
 
-        classification = build_classification(progress_callback=update_progress)
-        st.success("Classification complete!")
-        st.rerun()
+                    classification = build_classification(progress_callback=update_progress)
+                    st.success("Classification complete!")
+            finally:
+                build_lock.release()
+            st.rerun()
 
 else:
-    if st.button("🔄 Rebuild Classification (manual refresh)"):
-        with st.spinner("Rebuilding..."):
-            classification = build_classification()
-        st.rerun()
-
     theme_counts = get_theme_counts(classification)
 
     if "selected_theme" not in st.session_state:
@@ -173,7 +184,7 @@ else:
                     f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
                 )
 
-            chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
+            chat_llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none").bind_tools([lookup_company])
 
             company_list = ", ".join(f"{c['name']} ({c['ticker']})" for c in companies[:20])
             system_prompt = f"""You are the Retail Research Assistant's
