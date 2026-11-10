@@ -1,4 +1,5 @@
 import sys
+import uuid
 from pathlib import Path
 import datetime
 
@@ -35,6 +36,8 @@ render_nav_bar(active="Compare")
 st.title("⚖️ Compare Stocks")
 st.caption("Factual side-by-side comparison — no predictions, no bullish/bearish calls.")
 
+USER_KEY = st.session_state.setdefault("history_user_key", uuid.uuid4().hex)
+
 if "search_options" not in st.session_state:
     st.session_state.search_options = build_search_options()
 if "compare_count" not in st.session_state:
@@ -46,12 +49,12 @@ if "compare_summary" not in st.session_state:
 if "compare_chat" not in st.session_state:
     st.session_state.compare_chat = []
 
-past_sessions = load_history("compare", None, limit=15)
+past_sessions = load_history("compare", USER_KEY, limit=15)
 if past_sessions:
     with st.expander(f"📜 Past comparison sessions ({len(past_sessions)} saved)"):
         for s in past_sessions:
             ts = datetime.datetime.fromtimestamp(s["timestamp"]).strftime("%Y-%m-%d %H:%M")
-            st.caption(f"{ts} — {s['key_label']}")
+            st.caption(f"{ts} — {','.join(s['data'].get('tickers', []))}")
 
 st.markdown("**How many tickers do you want to compare?**")
 count_cols = st.columns(5)
@@ -82,7 +85,7 @@ if st.session_state.compare_count:
                 st.session_state.compare_results = run_deep_compare(tickers)
                 st.session_state.compare_summary = summarize_compare(st.session_state.compare_results)
                 st.session_state.compare_chat = []
-                save_history("compare", ",".join(tickers), {
+                save_history("compare", USER_KEY, {
                     "tickers": tickers, "summary": st.session_state.compare_summary,
                 })
 
@@ -176,7 +179,7 @@ if st.session_state.compare_results:
                 f"Same-sector peers: {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none").bind_tools([lookup_company])
 
         compare_context = "\n".join(
             f"{t}: sector={results[t].get('info', {}).get('sector')}, "
@@ -184,9 +187,9 @@ if st.session_state.compare_results:
             for t in tickers if "error" not in results[t]
         )
 
-        past_compare_sessions = load_history("compare", None, limit=10)
+        past_compare_sessions = load_history("compare", USER_KEY, limit=10)
         past_summary = [
-            {"when": datetime.datetime.fromtimestamp(s["timestamp"]).strftime("%Y-%m-%d %H:%M"), "tickers": s["key_label"]}
+            {"when": datetime.datetime.fromtimestamp(s["timestamp"]).strftime("%Y-%m-%d %H:%M"), "tickers": ",".join(s["data"].get("tickers", []))}
             for s in past_compare_sessions
         ]
 

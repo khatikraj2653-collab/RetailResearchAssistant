@@ -1,4 +1,5 @@
 import sys
+import uuid
 from pathlib import Path
 import datetime
 
@@ -36,6 +37,8 @@ render_nav_bar(active="Stock Research")
 st.title("🔎 Stock Research")
 st.caption("Factual company research — no predictions, no bullish/bearish calls.")
 
+USER_KEY = st.session_state.setdefault("history_user_key", uuid.uuid4().hex)
+
 if "search_options" not in st.session_state:
     st.session_state.search_options = build_search_options()
 if "research_result" not in st.session_state:
@@ -45,12 +48,12 @@ if "research_ticker" not in st.session_state:
 if "research_chat" not in st.session_state:
     st.session_state.research_chat = []
 
-past_sessions = load_history("stock_research", None, limit=15)
+past_sessions = load_history("stock_research", USER_KEY, limit=15)
 if past_sessions:
     with st.expander(f"📜 Past research sessions ({len(past_sessions)} saved)"):
         for s in past_sessions:
             ts = datetime.datetime.fromtimestamp(s["timestamp"]).strftime("%Y-%m-%d %H:%M")
-            st.caption(f"{ts} — {s['key_label']}")
+            st.caption(f"{ts} — {s['data'].get('ticker', '')}")
 
 selected = st.selectbox(
     "Search by company name or ticker",
@@ -85,7 +88,7 @@ if (_research_now and selected != "Type to search...") or _sample_clicked:
         except Exception as e:
             st.error(f"Couldn't fetch data for {ticker}: {e}")
         else:
-            save_history("stock_research", ticker, {"result": result})
+            save_history("stock_research", USER_KEY, {"ticker": ticker, "result": result})
             st.session_state.research_result = result
             st.session_state.research_ticker = ticker
             st.session_state.research_chat = []
@@ -187,9 +190,12 @@ if st.session_state.research_result:
                 f"Same-sector peers (used as a proxy for competitors): {', '.join(peers) if peers else 'Not available'}"
             )
 
-        chat_llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2).bind_tools([lookup_company])
+        chat_llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none").bind_tools([lookup_company])
 
-        prior_sessions_for_ticker = load_history("stock_research", ticker, limit=5)
+        prior_sessions_for_ticker = [
+            s for s in load_history("stock_research", USER_KEY, limit=50)
+            if s["data"].get("ticker") == ticker
+        ][:5]
         prior_summary = [
             {"when": datetime.datetime.fromtimestamp(s["timestamp"]).strftime("%Y-%m-%d %H:%M")}
             for s in prior_sessions_for_ticker

@@ -15,7 +15,7 @@ from langgraph.graph import StateGraph, END
 
 from data.yfinance_client import get_company_info, get_quote
 
-llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.2)
+llm = ChatOpenAI(model="gpt-6-luna", temperature=0.2, reasoning_effort="none")
 
 
 class CompareState(TypedDict, total=False):
